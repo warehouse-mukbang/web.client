@@ -1,0 +1,20 @@
+{
+  "name": "extension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx live-server public",
+    "build": "npm run css:build",
+    "css:watch": "npx tailwindcss -o public/styles.css --watch",
+    "css:build": "NODE_ENV=production npx tailwindcss -o public/styles.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.3.7",
+    "postcss": "^8.3.9",
+    "tailwindcss": "^2.2.17"
+  }
+}
