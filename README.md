@@ -81,3 +81,4 @@ Note: If you want to update styles, you'll need to open another terminal tab at 
 - [ ] host server for mobile version
 - [ ] show loading states for cards fetching data
 - [ ] show empty states when no data is available
+- [ ] add server-side caching to speed up page load
