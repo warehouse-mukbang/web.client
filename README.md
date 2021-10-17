@@ -53,7 +53,7 @@ Once installed, you can do the following:
 4. `pm2 list` to verify that the server status is started. you can also verify this by opening up the newtab page (after installing the extension). if data gets returned from the api calls, pm2 is working correctly
 5. run `pm2 save`. once this is run, any pm2 process that is currently running will start up when your computer reboots
 
-NOTE: pm2 will _not_ run on every login; just reboots. if this turns out to be a problem, instructions will be added to use the Automator app.
+NOTE: pm2 will _not_ run on every login; just reboots. if this turns out to be a problem, instructions will be added to [use the Automator app](https://stackoverflow.com/questions/6442364/running-script-upon-login-mac).
 
 ### Install Chrome Extension
 
