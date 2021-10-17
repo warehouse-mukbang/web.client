@@ -9,7 +9,7 @@ app.use(cors());
 
 app.get('/github', async (request, response) => {
   const querystring = encodeURIComponent(
-    `is:closed is:pr review-requested:${process.env.GITHUB_USERNAME} archived:false`
+    `is:open is:pr review-requested:${process.env.GITHUB_USERNAME} archived:false`
   );
 
   const data = await (
