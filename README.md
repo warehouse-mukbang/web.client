@@ -41,7 +41,19 @@ To generate your github personal access token, navigate to `settings > developer
 
 ### Run Server on Login
 
-TODO: Add documentation to start up server with Automator on Mac
+On Mac, it is very easy to start the server on-boot. To do this, you'll need to globally install `pm2` via `npm i -g pm2`
+
+###### Here is a [helpful URL](https://pm2.keymetrics.io/docs/usage/startup/) that will explain the steps below.
+
+Once installed, you can do the following:
+
+1. run `pm2 startup` - this will return another command to run
+2. run the command returned from step 1
+3. navigate to this `vitals-dashboard/server` and run `pm2 start server.js`
+4. `pm2 list` to verify that the server status is started. you can also verify this by opening up the newtab page (after installing the extension). if data gets returned from the api calls, pm2 is working correctly
+5. run `pm2 save`. once this is run, any pm2 process that is currently running will start up when your computer reboots
+
+NOTE: pm2 will _not_ run on every login; just reboots. if this turns out to be a problem, instructions will be added to use the Automator app.
 
 ### Install Chrome Extension
 
