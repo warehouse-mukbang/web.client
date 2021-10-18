@@ -41,7 +41,7 @@ app.get('/github', async (request, response) => {
 
 app.get('/shortcut', async (request, response) => {
   const querystring = encodeURIComponent(
-    `owner:${process.env.SHORTCUT_USERNAME} !is:done`
+    `owner:${process.env.SHORTCUT_USERNAME} !is:done !is:archived`
   );
 
   const data = await (
