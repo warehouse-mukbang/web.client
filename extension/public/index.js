@@ -5,6 +5,7 @@ async function main() {
     fetch(SERVER_URL + '/github'),
     fetch(SERVER_URL + '/shortcut'),
   ]);
+  
   const data = await Promise.allSettled(
     responses.map(response => response.value.json())
   );
