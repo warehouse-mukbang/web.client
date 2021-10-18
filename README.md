@@ -13,6 +13,7 @@ Currently, the dashboard displays the following data:
 - [ ] Open Intercom Conversations
 - [ ] Top Post from `r/programmerhumor`
 - [ ] Harness apps awaiting deploy
+  - [ ] Most recently deployed PR
 - [ ] Poker Bank top 3
 
 ## Setup
