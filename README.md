@@ -6,7 +6,7 @@ Currently, the dashboard displays the following data:
 
 - [x] Open Pull Requests assigned to you
 - [ ] Upcoming Calendar Events (Outlook)
-- [ ] Assigned Shortcut Stories
+- [x] Assigned Shortcut Stories
 - [ ] New Relic Health Check
 - [ ] Current On-Call
 - [ ] BugSnag: Trending Bug (1/3/7 days)
@@ -38,6 +38,10 @@ To generate your github personal access token, navigate to `settings > developer
 - read:user
 - repo
 - user:email
+
+#### Shortcut Token
+
+To retrieve your Shortcut API token, navigate to `settings > API Tokens` and create a new token. That's it!
 
 ### Run Server on Login
 
