@@ -39,6 +39,34 @@ app.get('/github', async (request, response) => {
   });
 });
 
+app.get('/shortcut', async (request, response) => {
+  const querystring = encodeURIComponent(
+    `owner:${process.env.SHORTCUT_USERNAME} !is:done`
+  );
+
+  const data = await (
+    await fetch(
+      `https://api.app.shortcut.com/api/v3/search/stories?query=${querystring}`,
+      {
+        headers: {
+          'Shortcut-Token': process.env.SHORTCUT_TOKEN,
+        },
+      }
+    )
+  ).json();
+
+  response.status(200).json({
+    total_count: data.total,
+    items: data.data.map(item => ({
+      url: item.app_url,
+      title: item.name,
+      created_at: item.created_at,
+      estimate: item.estimate,
+      type: item.story_type,
+    })),
+  });
+});
+
 const PORT = 49666;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
