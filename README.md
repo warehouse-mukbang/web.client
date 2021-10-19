@@ -11,7 +11,7 @@ Currently, the dashboard displays the following data:
 - [ ] Current On-Call
 - [ ] BugSnag: Trending Bug (1/3/7 days)
 - [ ] Open Intercom Conversations
-- [ ] Top Post from `r/programmerhumor`
+- [x] Top Post from `r/programmerhumor`
 - [ ] Harness apps awaiting deploy
   - [ ] Most recently deployed PR
 - [ ] Poker Bank top 3
