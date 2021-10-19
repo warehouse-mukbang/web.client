@@ -67,6 +67,20 @@ app.get('/shortcut', async (request, response) => {
   });
 });
 
+app.get('/reddit', async (request, response) => {
+  const resp = await (
+    await fetch(`https://www.reddit.com/r/programmerhumor/top.json?count=1`)
+  ).json();
+
+  const post = resp.data.children[0]?.data ?? {};
+
+  response.status(200).json({
+    title: post.title,
+    score: post.score,
+    image_url: post.url,
+  });
+});
+
 const PORT = 49666;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

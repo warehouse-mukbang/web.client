@@ -4,18 +4,20 @@ async function main() {
   const responses = await Promise.allSettled([
     fetch(SERVER_URL + '/github'),
     fetch(SERVER_URL + '/shortcut'),
+    fetch(SERVER_URL + '/reddit'),
   ]);
-  
+
   const data = await Promise.allSettled(
     responses.map(response => response.value.json())
   );
 
   const promises = data.map(response => response.value);
 
-  const [github, shortcut] = promises;
+  const [github, shortcut, reddit] = promises;
 
   generate_github_card(github);
   generate_shortcut_card(shortcut);
+  generate_reddit_card(reddit);
 }
 
 function generate_github_card(data) {
@@ -80,6 +82,20 @@ function generate_shortcut_card(data) {
     row.innerHTML = tempStub.trim();
     list.appendChild(row);
   });
+}
+
+function generate_reddit_card(data) {
+  const xml = new XMLHttpRequest();
+  xml.open('GET', 'stubs/reddit.html', false);
+  xml.send();
+
+  let stub = xml.responseText;
+
+  const container = document.getElementById('reddit_top_post_container');
+
+  stub = stub.replace('{{TITLE}}', data.title);
+  stub = stub.replace('{{IMAGE_URL}}', data.image_url);
+  container.innerHTML = stub;
 }
 
 main();

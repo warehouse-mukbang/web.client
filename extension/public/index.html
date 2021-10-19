@@ -7,7 +7,7 @@
     <link href="styles.css" type="text/css" rel="stylesheet" />
     <title>Vitals Dashboard</title>
   </head>
-  <body class="h-screen w-screen">
+  <body class="min-h-screen w-screen">
     <main class="min-h-full w-full p-16 bg-gray-100">
       <ul role="list" class="flex flex-wrap items-center justify-center">
         <li
@@ -52,6 +52,28 @@
             id="shortcut_stories_list"
             class="max-h-full overflow-scroll"
           ></ul>
+        </li>
+        <li
+          id="reddit_top_post"
+          class="
+            m-4
+            bg-white
+            rounded-lg
+            shadow
+            h-[400px]
+            w-[400px]
+            p-4
+            flex flex-col
+          "
+        >
+          <p class="text-lg border-b pb-4 text-gray-600">
+            Top post from
+            <span class="text-blue-400">r/ProgrammerHumor</span>
+          </p>
+          <div
+            class="flex-1 overflow-hidden flex flex-col items-center"
+            id="reddit_top_post_container"
+          ></div>
         </li>
       </ul>
     </main>
