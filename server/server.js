@@ -69,7 +69,7 @@ app.get('/shortcut', async (request, response) => {
 
 app.get('/reddit', async (request, response) => {
   const resp = await (
-    await fetch(`https://www.reddit.com/r/programmerhumor/top.json?count=1`)
+    await fetch(`https://www.reddit.com/r/programmerhumor/hot.json?count=1`)
   ).json();
 
   const post = resp.data.children[0]?.data ?? {};
