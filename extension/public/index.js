@@ -5,6 +5,7 @@ async function main() {
     fetch(SERVER_URL + '/github'),
     fetch(SERVER_URL + '/shortcut'),
     fetch(SERVER_URL + '/reddit'),
+    fetch(SERVER_URL + '/pagerduty'),
   ]);
 
   const data = await Promise.allSettled(
@@ -13,11 +14,12 @@ async function main() {
 
   const promises = data.map(response => response.value);
 
-  const [github, shortcut, reddit] = promises;
+  const [github, shortcut, reddit, pagerduty] = promises;
 
   generate_github_card(github);
   generate_shortcut_card(shortcut);
   generate_reddit_card(reddit);
+  generate_pagerduty_card(pagerduty);
 }
 
 function generate_github_card(data) {
@@ -94,8 +96,48 @@ function generate_reddit_card(data) {
   const container = document.getElementById('reddit_top_post_container');
 
   stub = stub.replace('{{TITLE}}', data.title);
-  stub = stub.replace('{{IMAGE_URL}}', data.image_url);
+
+  if (!data.is_video) {
+    stub = stub.replace('{{IMAGE_URL}}', data.media_url);
+  } else {
+    stub = stub.replace('{{VIDEO_URL}}', data.media_url);
+  }
+
   container.innerHTML = stub;
+  document
+    .getElementById(!data.isVideo ? 'reddit-image' : 'reddit-video')
+    .remove();
+}
+
+function generate_pagerduty_card(data) {
+  const xml = new XMLHttpRequest();
+  xml.open('GET', 'stubs/pagerduty.html', false);
+  xml.send();
+
+  let current_stub = xml.responseText;
+  let next_stub = xml.responseText;
+
+  const current_container = document.getElementById('pagerduty_oncall_current');
+  const next_container = document.getElementById('pagerduty_oncall_next');
+
+  current_stub = current_stub.replace('{{NAME}}', data.current.user.summary);
+  next_stub = next_stub.replace('{{NAME}}', data.next.user.summary);
+
+  current_stub = current_stub.replace(
+    '{{END_DATE}}',
+    new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'medium',
+    }).format(new Date(data.current.end))
+  );
+  next_stub = next_stub.replace(
+    '{{END_DATE}}',
+    new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'medium',
+    }).format(new Date(data.next.end))
+  );
+
+  current_container.innerHTML = current_stub;
+  next_container.innerHTML = next_stub;
 }
 
 main();

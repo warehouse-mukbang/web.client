@@ -77,7 +77,39 @@ app.get('/reddit', async (request, response) => {
   response.status(200).json({
     title: post.title,
     score: post.score,
-    image_url: post.url,
+    media_url: !post.is_video ? post.url : post.media.reddit_video.fallback_url,
+    is_video: post.is_video,
+  });
+});
+
+app.get('/pagerduty', async (request, response) => {
+  const today_start = new Date();
+  const today_end = new Date();
+  const start_date = new Date(today_start.setDate(today_start.getDate() - 14));
+  const end_date = new Date(today_end.setDate(today_end.getDate() + 14));
+
+  const resp = await (
+    await fetch(
+      `https://api.pagerduty.com/schedules/${process.env.PAGERDUTY_SCHEDULE}?time_zone=UTC&since=${start_date}&until=${end_date}`,
+      {
+        headers: {
+          Authorization: `Token token=${process.env.PAGERDUTY_TOKEN}`,
+        },
+      }
+    )
+  ).json();
+
+  const scheduled_users =
+    resp.schedule.final_schedule.rendered_schedule_entries;
+
+  const current = scheduled_users.findIndex(
+    user =>
+      new Date(user.start) <= new Date() && new Date(user.end) >= new Date()
+  );
+
+  response.status(200).json({
+    current: scheduled_users[current],
+    next: scheduled_users[current + 1],
   });
 });
 
