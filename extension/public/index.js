@@ -105,7 +105,7 @@ function generate_reddit_card(data) {
 
   container.innerHTML = stub;
   document
-    .getElementById(!data.isVideo ? 'reddit-image' : 'reddit-video')
+    .getElementById(data.is_video ? 'reddit-image' : 'reddit-video')
     .remove();
 }
 
