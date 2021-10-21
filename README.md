@@ -8,7 +8,7 @@ Currently, the dashboard displays the following data:
 - [ ] Upcoming Calendar Events (Outlook)
 - [x] Assigned Shortcut Stories
 - [ ] New Relic Health Check
-- [ ] Current On-Call
+- [x] Current On-Call
 - [ ] BugSnag: Trending Bug (1/3/7 days)
 - [ ] Open Intercom Conversations
 - [x] Top Post from `r/programmerhumor`
