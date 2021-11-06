@@ -15,6 +15,9 @@ Currently, the dashboard displays the following data:
 - [ ] Harness apps awaiting deploy
   - [ ] Most recently deployed PR
 - [ ] Poker Bank top 3
+- [ ] Reading / Viewing List
+  - [ ] Source from email newsletters, bookmarks folder, slack messages, gist, etc
+  - [ ] Archive read articles
 
 ## Setup
 
