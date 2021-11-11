@@ -9,7 +9,8 @@ Currently, the dashboard displays the following data:
 - [x] Assigned Shortcut Stories
 - [ ] New Relic Health Check
 - [x] Current On-Call
-- [ ] BugSnag: Trending Bug (1/3/7 days)
+- [x] BugSnag
+  - [x] Recently Introduced Bugs
 - [ ] Open Intercom Conversations
 - [x] Trending (Hot) Post from `r/programmerhumor`
 - [ ] Harness apps awaiting deploy
