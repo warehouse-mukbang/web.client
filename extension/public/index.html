@@ -8,17 +8,28 @@
     <title>Vitals Dashboard</title>
   </head>
   <body class="min-h-screen w-screen">
-    <main class="min-h-screen h-full w-full p-16 bg-gray-100">
-      <ul role="list" class="flex flex-wrap items-center justify-center">
+    <main class="min-h-screen h-full w-full p-12 bg-gray-100">
+      <ul
+        role="list"
+        class="
+          grid grid-cols-2
+          xl:grid-cols-4
+          gap-4
+          items-center
+          justify-center
+          h-full
+        "
+      >
         <li
           id="github_repos"
           class="
-            m-4
             bg-white
             rounded-lg
             shadow
-            h-[400px]
-            w-[800px]
+            min-h-[400px]
+            h-full
+            w-full
+            col-span-2
             p-4
             flex flex-col
           "
@@ -32,12 +43,13 @@
         <li
           id="shortcut_stories"
           class="
-            m-4
             bg-white
             rounded-lg
             shadow
-            h-[400px]
-            w-[800px]
+            min-h-[400px]
+            h-full
+            w-full
+            col-span-2
             p-4
             flex flex-col
           "
@@ -56,12 +68,14 @@
         <li
           id="reddit_top_post"
           class="
-            m-4
             bg-white
             rounded-lg
             shadow
-            h-[400px]
-            w-[400px]
+            min-h-[400px]
+            col-span-2
+            md:col-span-1
+            h-full
+            w-full
             p-4
             flex flex-col
           "
@@ -78,12 +92,14 @@
         <li
           id="pagerduty_oncall"
           class="
-            m-4
             bg-white
             rounded-lg
             shadow
-            h-[400px]
-            w-[400px]
+            min-h-[400px]
+            col-span-2
+            md:col-span-1
+            h-full
+            w-full
             p-4
             flex flex-col
           "
@@ -102,12 +118,13 @@
         <li
           id="bugsnag_introduced"
           class="
-            m-4
             bg-white
             rounded-lg
             shadow
-            h-[400px]
-            w-[800px]
+            min-h-[400px]
+            h-full
+            w-full
+            col-span-2
             p-4
             flex flex-col
           "
