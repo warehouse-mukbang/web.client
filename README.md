@@ -15,6 +15,9 @@ Currently, the dashboard displays the following data:
 - [ ] Harness apps awaiting deploy
   - [ ] Most recently deployed PR
 - [ ] Poker Bank top 3
+- [ ] Reading / Viewing List
+  - [ ] Source from email newsletters, bookmarks folder, slack messages, gist, etc
+  - [ ] Archive read articles
 
 ## Setup
 
@@ -96,7 +99,7 @@ Note: If you want to update styles, you'll need to open another terminal tab at 
 
 - [ ] allow for dashboard customizations (eg: `GITHUB_ENABLED`, `GITHUB_POSITION` variables)
 - [ ] add dark mode
-- [ ] host server for mobile version
+- [ ] host server for mobile version & long-term storage
 - [ ] show loading states for cards fetching data
 - [ ] show empty states when no data is available
 - [ ] add server-side caching to speed up page load
