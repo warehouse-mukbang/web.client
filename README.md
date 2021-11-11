@@ -15,7 +15,7 @@ Currently, the dashboard displays the following data:
 - [x] Trending (Hot) Post from `r/programmerhumor`
 - [ ] Harness apps awaiting deploy
   - [ ] Most recently deployed PR
-- [ ] Poker Bank top 3
+- [x] Poker Bank top 3
 - [ ] Reading / Viewing List
   - [ ] Source from email newsletters, bookmarks folder, slack messages, gist, etc
   - [ ] Archive read articles

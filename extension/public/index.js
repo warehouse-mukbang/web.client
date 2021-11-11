@@ -7,6 +7,7 @@ async function main() {
     fetch(SERVER_URL + '/reddit'),
     fetch(SERVER_URL + '/pagerduty'),
     fetch(SERVER_URL + '/bugsnag'),
+    fetch(SERVER_URL + '/pokerbank'),
   ]);
 
   const data = await Promise.allSettled(
@@ -15,13 +16,14 @@ async function main() {
 
   const promises = data.map(response => response.value);
 
-  const [github, shortcut, reddit, pagerduty, bugsnag] = promises;
+  const [github, shortcut, reddit, pagerduty, bugsnag, pokerbank] = promises;
 
   generate_github_card(github);
   generate_shortcut_card(shortcut);
   generate_reddit_card(reddit);
   generate_pagerduty_card(pagerduty);
   generate_bugsnag_card(bugsnag);
+  generate_pokerbank_card(pokerbank);
 }
 
 function generate_github_card(data) {
@@ -168,6 +170,56 @@ function generate_bugsnag_card(data) {
     row.innerHTML = tempStub.trim();
     list.appendChild(row);
   });
+}
+
+function generate_pokerbank_card(data) {
+  console.log('data', data);
+
+  const xml = new XMLHttpRequest();
+  xml.open('GET', 'stubs/pokerbank.html', false);
+  xml.send();
+
+  let stub = xml.responseText;
+
+  const container = document.getElementById('pokerbank-podium-chart');
+
+  stub = stub.replace('{{GOLD_IMG}}', data.users[0].imageUrl);
+  stub = stub.replace('{{SILVER_IMG}}', data.users[1].imageUrl);
+  stub = stub.replace('{{BRONZE_IMG}}', data.users[2].imageUrl);
+
+  stub = stub.replace('{{GOLD_NAME}}', data.users[0].name);
+  stub = stub.replace('{{SILVER_NAME}}', data.users[1].name);
+  stub = stub.replace('{{BRONZE_NAME}}', data.users[2].name);
+
+  stub = stub.replace(
+    '{{GOLD_BANK}}',
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 0,
+    }).format(data.users[0].bank)
+  );
+  stub = stub.replace(
+    '{{SILVER_BANK}}',
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 0,
+    }).format(data.users[1].bank)
+  );
+  stub = stub.replace(
+    '{{BRONZE_BANK}}',
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      currencyDisplay: 'symbol',
+      maximumFractionDigits: 0,
+    }).format(data.users[2].bank)
+  );
+
+  container.innerHTML = stub;
 }
 
 main();

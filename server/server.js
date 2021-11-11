@@ -137,6 +137,18 @@ app.get('/bugsnag', async (request, response) => {
   });
 });
 
+app.get('/pokerbank', async (request, response) => {
+  const users = await (
+    await fetch(`https://poker-bank-api.fly.dev/users?limit=3`, {
+      headers: {
+        token: process.env.POKERBANK_TOKEN,
+      },
+    })
+  ).json();
+
+  response.status(200).json(users);
+});
+
 const PORT = 49666;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
