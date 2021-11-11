@@ -99,6 +99,28 @@
             id="pagerduty_oncall_next"
           ></div>
         </li>
+        <li
+          id="bugsnag_introduced"
+          class="
+            m-4
+            bg-white
+            rounded-lg
+            shadow
+            h-[400px]
+            w-[800px]
+            p-4
+            flex flex-col
+          "
+        >
+          <p class="text-lg border-b pb-4 text-gray-600">
+            Bugs introduced today:
+            <span id="bugsnag_introduced_today" class="text-blue-400">...</span>
+          </p>
+          <div
+            class="flex-1 overflow-hidden flex flex-col items-center"
+            id="bugsnag_introduced_list"
+          ></div>
+        </li>
       </ul>
     </main>
     <script src="index.js" type="text/javascript"></script>

@@ -113,6 +113,30 @@ app.get('/pagerduty', async (request, response) => {
   });
 });
 
+app.get('/bugsnag', async (request, response) => {
+  const bugs = await (
+    await fetch(
+      `https://api.bugsnag.com/projects/${process.env.BUGSNAG_PROJECT_ID}/errors?filters[error.status]=new&filters[event.since]=1d&filters[app.release_stage]=production&sort=events`,
+      {
+        headers: {
+          Authorization: `token ${process.env.BUGSNAG_TOKEN}`,
+        },
+      }
+    )
+  ).json();
+
+  response.status(200).json({
+    bugs: bugs.map(bug => ({
+      message: bug.message,
+      events: bug.events,
+      class: bug.error_class,
+      severity: bug.severity,
+      path: bug.context,
+      url: `https://app.bugsnag.com/${process.env.BUGSNAG_ORGANIZATION_NAME}/${process.env.BUGSNAG_PROJECT_NAME}/errors/${bug.id}`,
+    })),
+  });
+});
+
 const PORT = 49666;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

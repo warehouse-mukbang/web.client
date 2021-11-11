@@ -6,6 +6,7 @@ async function main() {
     fetch(SERVER_URL + '/shortcut'),
     fetch(SERVER_URL + '/reddit'),
     fetch(SERVER_URL + '/pagerduty'),
+    fetch(SERVER_URL + '/bugsnag'),
   ]);
 
   const data = await Promise.allSettled(
@@ -14,12 +15,13 @@ async function main() {
 
   const promises = data.map(response => response.value);
 
-  const [github, shortcut, reddit, pagerduty] = promises;
+  const [github, shortcut, reddit, pagerduty, bugsnag] = promises;
 
   generate_github_card(github);
   generate_shortcut_card(shortcut);
   generate_reddit_card(reddit);
   generate_pagerduty_card(pagerduty);
+  generate_bugsnag_card(bugsnag);
 }
 
 function generate_github_card(data) {
@@ -138,6 +140,34 @@ function generate_pagerduty_card(data) {
 
   current_container.innerHTML = current_stub;
   next_container.innerHTML = next_stub;
+}
+
+function generate_bugsnag_card(data) {
+  document.getElementById('bugsnag_introduced_today').innerHTML =
+    data.bugs.length;
+
+  const xml = new XMLHttpRequest();
+  xml.open('GET', 'stubs/bugsnag.html', false);
+  xml.send();
+
+  const stub = xml.responseText;
+
+  const list = document.getElementById('bugsnag_introduced_list');
+
+  data.bugs.forEach(bug => {
+    const row = document.createElement('li');
+    row.classList.add('max-w-full');
+    let tempStub = stub;
+
+    tempStub = tempStub.replace('{{URL}}', bug.url);
+    tempStub = tempStub.replace('{{CLASS}}', bug.class);
+    tempStub = tempStub.replace('{{MESSAGE}}', bug.message);
+    tempStub = tempStub.replace('{{PATH}}', bug.path);
+    tempStub = tempStub.replace('{{EVENTS}}', bug.events);
+
+    row.innerHTML = tempStub.trim();
+    list.appendChild(row);
+  });
 }
 
 main();
