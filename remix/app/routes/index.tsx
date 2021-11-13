@@ -17,6 +17,10 @@ import PagerDutyService from '~/services/pagerduty-service';
 import PagerDuty from '~/components/Cards/PagerDuty';
 import { OnCallSchedule } from '~/types/cards/pagerduty';
 
+import BugSnagService from '~/services/bugsnag-service';
+import BugSnag from '~/components/Cards/BugSnag';
+import { Bug } from '~/types/cards/bugsnag';
+
 export let meta: MetaFunction = () => {
   return {
     title: 'Vitals Dashboard V2',
@@ -28,6 +32,7 @@ interface PageData {
   shortcut: Story[];
   reddit: Post;
   pagerduty: OnCallSchedule;
+  bugsnag: { bugs: Bug[]; error?: boolean };
 }
 
 export let loader: LoaderFunction = async (): Promise<PageData> => {
@@ -35,12 +40,14 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
   const shortcut_service = new ShortcutService(fetch);
   const reddit_service = new RedditService(fetch);
   const pagerduty_service = new PagerDutyService(fetch);
+  const bugsnag_service = new BugSnagService(fetch);
 
-  const [github, shortcut, reddit, pagerduty] = await Promise.all([
+  const [github, shortcut, reddit, pagerduty, bugsnag] = await Promise.all([
     github_service.get(),
     shortcut_service.get(),
     reddit_service.get(),
     pagerduty_service.get(),
+    bugsnag_service.get(),
   ]);
 
   return {
@@ -48,6 +55,7 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
     shortcut,
     reddit,
     pagerduty,
+    bugsnag,
   };
 };
 
@@ -64,6 +72,7 @@ export default function Index() {
         <Shortcut stories={data.shortcut} />
         <Reddit post={data.reddit} />
         <PagerDuty {...data.pagerduty} />
+        <BugSnag {...data.bugsnag} />
       </ul>
     </main>
   );
