@@ -7,7 +7,7 @@ class BugSnagService implements APIService {
 
   async get(): Promise<{ bugs: Bug[]; error?: boolean }> {
     const bugs = await (
-      await fetch(
+      await this.api(
         `https://api.bugsnag.com/projects/${process.env.BUGSNAG_PROJECT_ID}/errors?filters[error.status]=new&filters[event.since]=1d&filters[app.release_stage]=production&sort=events`,
         {
           headers: {

@@ -7,7 +7,7 @@ class RedditService implements APIService {
 
   async get(): Promise<Post> {
     const resp = await (
-      await fetch(`https://www.reddit.com/r/programmerhumor/hot.json?count=1`)
+      await this.api(`https://www.reddit.com/r/programmerhumor/hot.json?count=1`)
     ).json();
 
     const post = resp.data.children[0]?.data ?? {};

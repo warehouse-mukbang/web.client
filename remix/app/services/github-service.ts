@@ -11,7 +11,7 @@ class GithubService implements APIService {
     );
 
     const data = await (
-      await fetch(
+      await this.api(
         `https://api.github.com/search/issues?q=${querystring}&type=pr`,
         {
           headers: {

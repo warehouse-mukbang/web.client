@@ -14,7 +14,7 @@ class PagerDutyService implements APIService {
     const end_date = new Date(today_end.setDate(today_end.getDate() + 14));
 
     const resp = await (
-      await fetch(
+      await this.api(
         `https://api.pagerduty.com/schedules/${process.env.PAGERDUTY_SCHEDULE}?time_zone=UTC&since=${start_date}&until=${end_date}`,
         {
           headers: {

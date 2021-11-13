@@ -21,6 +21,10 @@ import BugSnagService from '~/services/bugsnag-service';
 import BugSnag from '~/components/Cards/BugSnag';
 import { Bug } from '~/types/cards/bugsnag';
 
+import PokerBankService from '~/services/pokerbank-service';
+import PokerBank from '~/components/Cards/PokerBank';
+import { PokerBankUser } from '~/types/cards/pokerbank';
+
 export let meta: MetaFunction = () => {
   return {
     title: 'Vitals Dashboard V2',
@@ -33,6 +37,7 @@ interface PageData {
   reddit: Post;
   pagerduty: OnCallSchedule;
   bugsnag: { bugs: Bug[]; error?: boolean };
+  pokerbank: { users: PokerBankUser[] };
 }
 
 export let loader: LoaderFunction = async (): Promise<PageData> => {
@@ -41,14 +46,17 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
   const reddit_service = new RedditService(fetch);
   const pagerduty_service = new PagerDutyService(fetch);
   const bugsnag_service = new BugSnagService(fetch);
+  const pokerbank_service = new PokerBankService(fetch);
 
-  const [github, shortcut, reddit, pagerduty, bugsnag] = await Promise.all([
-    github_service.get(),
-    shortcut_service.get(),
-    reddit_service.get(),
-    pagerduty_service.get(),
-    bugsnag_service.get(),
-  ]);
+  const [github, shortcut, reddit, pagerduty, bugsnag, pokerbank] =
+    await Promise.all([
+      github_service.get(),
+      shortcut_service.get(),
+      reddit_service.get(),
+      pagerduty_service.get(),
+      bugsnag_service.get(),
+      pokerbank_service.get(),
+    ]);
 
   return {
     github,
@@ -56,6 +64,7 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
     reddit,
     pagerduty,
     bugsnag,
+    pokerbank,
   };
 };
 
@@ -73,6 +82,7 @@ export default function Index() {
         <Reddit post={data.reddit} />
         <PagerDuty {...data.pagerduty} />
         <BugSnag {...data.bugsnag} />
+        <PokerBank {...data.pokerbank} />
       </ul>
     </main>
   );
