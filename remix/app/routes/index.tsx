@@ -13,6 +13,10 @@ import RedditService from '~/services/reddit-service';
 import Reddit from '~/components/Cards/Reddit';
 import { Post } from '~/types/cards/reddit';
 
+import PagerDutyService from '~/services/pagerduty-service';
+import PagerDuty from '~/components/Cards/PagerDuty';
+import { OnCallSchedule } from '~/types/cards/pagerduty';
+
 export let meta: MetaFunction = () => {
   return {
     title: 'Vitals Dashboard V2',
@@ -23,23 +27,27 @@ interface PageData {
   github: GithubData;
   shortcut: Story[];
   reddit: Post;
+  pagerduty: OnCallSchedule;
 }
 
 export let loader: LoaderFunction = async (): Promise<PageData> => {
   const github_service = new GithubService(fetch);
   const shortcut_service = new ShortcutService(fetch);
   const reddit_service = new RedditService(fetch);
+  const pagerduty_service = new PagerDutyService(fetch);
 
-  const [github, shortcut, reddit] = await Promise.all([
+  const [github, shortcut, reddit, pagerduty] = await Promise.all([
     github_service.get(),
     shortcut_service.get(),
     reddit_service.get(),
+    pagerduty_service.get(),
   ]);
 
   return {
     github,
     shortcut,
     reddit,
+    pagerduty,
   };
 };
 
@@ -55,6 +63,7 @@ export default function Index() {
         <Github {...data.github} />
         <Shortcut stories={data.shortcut} />
         <Reddit post={data.reddit} />
+        <PagerDuty {...data.pagerduty} />
       </ul>
     </main>
   );
