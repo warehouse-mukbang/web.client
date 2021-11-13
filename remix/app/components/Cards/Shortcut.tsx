@@ -10,8 +10,8 @@ const ShortcutCard: React.FC<{
       <Card.Header title='Your Shortcut Stories:' subtitle={stories.length} />
 
       <ul className='max-h-full overflow-scroll'>
-        {stories.map(pr => (
-          <StoryItem {...pr} key={pr.url} />
+        {stories.map(story => (
+          <StoryItem {...story} key={story.url} />
         ))}
       </ul>
     </Card.Base>

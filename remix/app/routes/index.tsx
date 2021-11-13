@@ -9,6 +9,10 @@ import ShortcutService from '~/services/shortcut-service';
 import Shortcut from '~/components/Cards/Shortcut';
 import { Story } from '~/types/cards/shortcut';
 
+import RedditService from '~/services/reddit-service';
+import Reddit from '~/components/Cards/Reddit';
+import { Post } from '~/types/cards/reddit';
+
 export let meta: MetaFunction = () => {
   return {
     title: 'Vitals Dashboard V2',
@@ -18,20 +22,24 @@ export let meta: MetaFunction = () => {
 interface PageData {
   github: GithubData;
   shortcut: Story[];
+  reddit: Post;
 }
 
 export let loader: LoaderFunction = async (): Promise<PageData> => {
   const github_service = new GithubService(fetch);
   const shortcut_service = new ShortcutService(fetch);
+  const reddit_service = new RedditService(fetch);
 
-  const [github, shortcut] = await Promise.all([
+  const [github, shortcut, reddit] = await Promise.all([
     github_service.get(),
     shortcut_service.get(),
+    reddit_service.get(),
   ]);
 
   return {
     github,
     shortcut,
+    reddit,
   };
 };
 
@@ -46,6 +54,7 @@ export default function Index() {
       >
         <Github {...data.github} />
         <Shortcut stories={data.shortcut} />
+        <Reddit post={data.reddit} />
       </ul>
     </main>
   );
