@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="styles.css" type="text/css" rel="stylesheet" />
-    <title>Vitals Dashboard</title>
+    <title>Vitals Dashboard V2</title>
 
     <style>
       html,
@@ -14,9 +14,34 @@
         width: 100vw;
       }
 
+      @keyframes shimmer {
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      .loader {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(
+          90deg,
+          white 20%,
+          rgb(209, 209, 209) 60%,
+          white
+        );
+        animation: shimmer 2s infinite;
+        content: '';
+      }
+
       #skeleton {
+        position: absolute;
         opacity: 1;
-        transition: opacity 0.2s ease-in-out;
+        transition: opacity 0.4s ease-in-out;
       }
 
       #page_content {
@@ -41,6 +66,8 @@
       >
         <li
           class="
+            relative
+            overflow-hidden
             bg-white
             rounded-lg
             shadow
@@ -48,12 +75,14 @@
             h-full
             w-full
             col-span-2
-            p-4
-            flex flex-col
           "
-        ></li>
+        >
+          <div class="loader" />
+        </li>
         <li
           class="
+            relative
+            overflow-hidden
             bg-white
             rounded-lg
             shadow
@@ -61,12 +90,14 @@
             h-full
             w-full
             col-span-1
-            p-4
-            flex flex-col
           "
-        ></li>
+        >
+          <div class="loader" />
+        </li>
         <li
           class="
+            relative
+            overflow-hidden
             bg-white
             rounded-lg
             shadow
@@ -74,12 +105,14 @@
             h-full
             w-full
             col-span-1
-            p-4
-            flex flex-col
           "
-        ></li>
+        >
+          <div class="loader" />
+        </li>
         <li
           class="
+            relative
+            overflow-hidden
             bg-white
             rounded-lg
             shadow
@@ -87,12 +120,14 @@
             h-full
             w-full
             col-span-1
-            p-4
-            flex flex-col
           "
-        ></li>
+        >
+          <div class="loader" />
+        </li>
         <li
           class="
+            relative
+            overflow-hidden
             bg-white
             rounded-lg
             shadow
@@ -100,12 +135,14 @@
             h-full
             w-full
             col-span-2
-            p-4
-            flex flex-col
           "
-        ></li>
+        >
+          <div class="loader" />
+        </li>
         <li
           class="
+            relative
+            overflow-hidden
             bg-white
             rounded-lg
             shadow
@@ -113,10 +150,10 @@
             h-full
             w-full
             col-span-1
-            p-4
-            flex flex-col
           "
-        ></li>
+        >
+          <div class="loader" />
+        </li>
       </ul>
     </main>
 

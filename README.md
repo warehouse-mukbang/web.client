@@ -32,7 +32,7 @@ At a glance, these are the things you'll need to do to get the extension running
 
 ### Environment Variables
 
-To add your own environment variables, run `cp server/.env.example server/.env`. This will create the boilerplate file for you to start adding correct values to.
+To add your own environment variables, run `cp remix/.env.example remix/.env`. This will create the boilerplate file for you to start adding correct values to.
 
 #### Github Token
 
@@ -59,9 +59,11 @@ Once installed, you can do the following:
 
 1. run `pm2 startup` - this will return another command to run
 2. run the command returned from step 1
-3. navigate to this `vitals-dashboard/server` and run `pm2 start server.js`
-4. `pm2 list` to verify that the server status is started. you can also verify this by opening up the newtab page (after installing the extension). if data gets returned from the api calls, pm2 is working correctly
-5. run `pm2 save`. once this is run, any pm2 process that is currently running will start up when your computer reboots
+3. navigate to this `vitals-dashboard/remix`
+4. run `npm run build` to generated a production-ready app
+5. run `pm2 start server/index.js` on the output
+6. `pm2 list` to verify that the server status is started. you can also verify this by opening up the newtab page (after installing the extension). if data gets returned from the api calls, pm2 is working correctly
+7. run `pm2 save`. once this is run, any pm2 process that is currently running will start up when your computer reboots
 
 NOTE: pm2 will _not_ run on every login; just reboots. if this turns out to be a problem, instructions will be added to [use the Automator app](https://stackoverflow.com/questions/6442364/running-script-upon-login-mac).
 
@@ -92,15 +94,16 @@ Note: If you want to update styles, you'll need to open another terminal tab at 
 
 ### Backend
 
-1. Navigate to the `server` folder and run `npm install`
+1. Navigate to the `remix` folder
 2. Verify that you have a `.env` file, and it has correct values in it (instructions above, if needed)
-3. Run `npm start`
+3. Run `npm start` in one terminal pane, and `npm run start:dev` in another
 
 ## Roadmap
 
 - [ ] allow for dashboard customizations (eg: `GITHUB_ENABLED`, `GITHUB_POSITION` variables)
 - [ ] add dark mode
 - [ ] host server for mobile version & long-term storage
-- [ ] show loading states for cards fetching data
+- [x] show loading states for cards fetching data
 - [ ] show empty states when no data is available
 - [ ] add server-side caching to speed up page load
+- [x] Rebuild with Remix
