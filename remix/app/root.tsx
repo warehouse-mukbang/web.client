@@ -35,7 +35,7 @@ function Document({
         <Meta />
         <Links />
       </head>
-      <body className='min-h-screen w-screen'>
+      <body className='min-h-screen w-screen bg-gray-100 dark:bg-gray-900'>
         {children}
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}

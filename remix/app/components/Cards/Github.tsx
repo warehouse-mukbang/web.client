@@ -23,27 +23,37 @@ const PullRequestItem: React.FC<OpenPR> = ({
   comments,
   created_at,
 }) => {
+  const formatDate = () => {
+    return new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'medium',
+    }).format(new Date(created_at));
+  };
   return (
     <li>
       <a
         href={url}
-        className='border-b border-l border-r py-2 px-4 flex items-center'
+        className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-center'
       >
-        <p className='truncate w-2/5'>{title}</p>
+        <p className='truncate w-2/5 dark:text-gray-200'>{title}</p>
 
         <img src={author.image_url} className='h-8 w-8 mx-2 rounded-full' />
-        <p className='text-sm text-gray-500 w-1/5'>@{author.name}</p>
+        <p className='text-sm text-gray-500 dark:text-gray-200 w-1/5'>
+          @{author.name}
+        </p>
 
         <div className='flex flex-grow justify-between ml-4 items-center'>
           <p className='text-sm text-gray-500'>
-            Opened: <span className='text-gray-700'>{created_at}</span>
+            Opened:{' '}
+            <span className='text-gray-700 dark:text-gray-200'>
+              {formatDate()}
+            </span>
           </p>
-          <p className='text-sm flex'>
+          <p className='text-sm flex dark:text-gray-200'>
             {comments}
             <span>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
-                className='h-6 w-6 ml-1'
+                className='h-6 w-6 ml-1 dark:text-gray-500'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'

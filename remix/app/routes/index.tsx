@@ -72,7 +72,7 @@ export default function Index() {
   let data = useLoaderData<PageData>();
 
   return (
-    <main className='min-h-screen h-full w-full p-12 bg-gray-100'>
+    <main className='min-h-screen h-full w-full p-12 bg-gray-100 dark:bg-gray-900'>
       <ul
         role='list'
         className='grid grid-cols-2 xl:grid-cols-4 gap-4 items-center justify-center h-full'

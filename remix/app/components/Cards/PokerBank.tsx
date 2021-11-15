@@ -13,39 +13,71 @@ const PokerBank: React.FC<{ users: PokerBankUser[] }> = ({ users }) => {
     }).format(bank);
   };
 
+  const formatName = (name: PokerBankUser['name']) => {
+    if (name === 'Mr. Poker') {
+      return name;
+    }
+
+    return name.split(' ')[0];
+  };
+
   return (
     <Card.Base size='small'>
       <Card.Header title='PokerBank Podium' />
 
-      <div className='w-full h-[70%] flex flex-row items-end justify-around pt-4'>
-        <div className='rounded-t-lg flex-col items-center justify-between w-24 h-[75%] flex bg-gray-300 p-4'>
-          <img
-            className='h-12 w-12 rounded-full'
-            src={users[1].imageUrl}
-            alt='silver place'
-          />
+      <div className='w-full h-full flex flex-row items-end justify-around pt-16'>
+        <div className='h-full flex flex-col items-center justify-end'>
+          <p className='text-gray-600 dark:text-white pb-2'>
+            {formatBank(users[1].bank)}
+          </p>
 
-          <p className='text-gray-600'>{formatBank(users[1].bank)}</p>
+          <div className='rounded-t-lg rounded-b-sm flex-col items-center justify-between w-24 h-[75%] flex bg-gray-300 dark:bg-gray-500 p-4'>
+            <img
+              className='h-12 w-12 rounded-full'
+              src={users[1].imageUrl}
+              alt='silver place'
+            />
+
+            <p className='text-gray-600 dark:text-white text-center'>
+              {formatName(users[1].name)}
+            </p>
+          </div>
         </div>
 
-        <div className='rounded-t-lg items-center justify-between w-24 h-full flex flex-col bg-yellow-300 bg-opacity-70 p-4'>
-          <img
-            className='h-12 w-12 rounded-full'
-            src={users[0].imageUrl}
-            alt='gold place'
-          />
+        <div className='h-full flex flex-col items-center justify-end'>
+          <p className='text-gray-600 dark:text-white pb-2'>
+            {formatBank(users[0].bank)}
+          </p>
 
-          <p className='text-gray-600'>{formatBank(users[0].bank)}</p>
+          <div className='rounded-t-lg rounded-b-sm items-center justify-between w-24 h-full flex flex-col bg-yellow-300 bg-opacity-70 dark:bg-opacity-60 p-4'>
+            <img
+              className='h-12 w-12 rounded-full'
+              src={users[0].imageUrl}
+              alt='gold place'
+            />
+
+            <p className='text-gray-600 dark:text-white text-center'>
+              {formatName(users[0].name)}
+            </p>
+          </div>
         </div>
 
-        <div className='rounded-t-lg items-center justify-between w-24 h-[60%] flex flex-col bg-yellow-800 bg-opacity-30 p-4'>
-          <img
-            className='h-12 w-12 rounded-full'
-            src={users[2].imageUrl}
-            alt='bronze place'
-          />
+        <div className='h-full flex flex-col items-center justify-end'>
+          <p className='text-gray-600 dark:text-white pb-2'>
+            {formatBank(users[2].bank)}
+          </p>
 
-          <p className='text-gray-600'>{formatBank(users[2].bank)}</p>
+          <div className='rounded-t-lg rounded-b-sm items-center justify-between w-24 h-[60%] flex flex-col bg-yellow-800 dark:bg-yellow-700 bg-opacity-30 dark:bg-opacity-60 p-4'>
+            <img
+              className='h-12 w-12 rounded-full'
+              src={users[2].imageUrl}
+              alt='bronze place'
+            />
+
+            <p className='text-gray-600 dark:text-white text-center'>
+              {formatName(users[2].name)}
+            </p>
+          </div>
         </div>
       </div>
     </Card.Base>

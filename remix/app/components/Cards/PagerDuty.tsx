@@ -27,8 +27,8 @@ const OnCall: React.FC<OnCall> = ({ start, end, user }) => {
     }).format(new Date(end));
   };
   return (
-    <div className='border-b border-l border-r py-2 px-4 flex items-between w-full'>
-      <p className='truncate w-1/2'>{user.summary}</p>
+    <div className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-between w-full'>
+      <p className='truncate w-1/2 dark:text-gray-300'>{user.summary}</p>
 
       <div className='flex flex-grow justify-between ml-4 items-center'>
         <p className='text-sm text-gray-500'>

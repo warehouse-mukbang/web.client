@@ -28,12 +28,12 @@
         bottom: 0;
         left: 0;
         transform: translateX(-100%);
-        background: linear-gradient(
+        /* background: linear-gradient(
           90deg,
           white 20%,
           rgb(209, 209, 209) 60%,
           white
-        );
+        ); */
         animation: shimmer 2s infinite;
         content: '';
       }
@@ -52,7 +52,10 @@
     </style>
   </head>
   <body class="min-h-screen w-screen">
-    <main id="skeleton" class="min-h-screen min-h-full w-full p-12 bg-gray-100">
+    <main
+      id="skeleton"
+      class="min-h-screen min-h-full w-full p-12 bg-gray-100 dark:bg-gray-900"
+    >
       <ul
         role="list"
         class="
@@ -69,6 +72,7 @@
             relative
             overflow-hidden
             bg-white
+            dark:bg-gray-800
             rounded-lg
             shadow
             min-h-[400px]
@@ -77,13 +81,23 @@
             col-span-2
           "
         >
-          <div class="loader" />
+          <div
+            class="
+              loader
+              bg-gradient-to-r
+              from-white
+              to-white
+              via-gray-300
+              dark:from-gray-800 dark:to-gray-800 dark:via-gray-700
+            "
+          />
         </li>
         <li
           class="
             relative
             overflow-hidden
             bg-white
+            dark:bg-gray-800
             rounded-lg
             shadow
             min-h-[400px]
@@ -92,13 +106,23 @@
             col-span-1
           "
         >
-          <div class="loader" />
+          <div
+            class="
+              loader
+              bg-gradient-to-r
+              from-white
+              to-white
+              via-gray-300
+              dark:from-gray-800 dark:to-gray-800 dark:via-gray-700
+            "
+          />
         </li>
         <li
           class="
             relative
             overflow-hidden
             bg-white
+            dark:bg-gray-800
             rounded-lg
             shadow
             min-h-[400px]
@@ -107,13 +131,23 @@
             col-span-1
           "
         >
-          <div class="loader" />
+          <div
+            class="
+              loader
+              bg-gradient-to-r
+              from-white
+              to-white
+              via-gray-300
+              dark:from-gray-800 dark:to-gray-800 dark:via-gray-700
+            "
+          />
         </li>
         <li
           class="
             relative
             overflow-hidden
             bg-white
+            dark:bg-gray-800
             rounded-lg
             shadow
             min-h-[400px]
@@ -122,13 +156,23 @@
             col-span-1
           "
         >
-          <div class="loader" />
+          <div
+            class="
+              loader
+              bg-gradient-to-r
+              from-white
+              to-white
+              via-gray-300
+              dark:from-gray-800 dark:to-gray-800 dark:via-gray-700
+            "
+          />
         </li>
         <li
           class="
             relative
             overflow-hidden
             bg-white
+            dark:bg-gray-800
             rounded-lg
             shadow
             min-h-[400px]
@@ -137,13 +181,23 @@
             col-span-2
           "
         >
-          <div class="loader" />
+          <div
+            class="
+              loader
+              bg-gradient-to-r
+              from-white
+              to-white
+              via-gray-300
+              dark:from-gray-800 dark:to-gray-800 dark:via-gray-700
+            "
+          />
         </li>
         <li
           class="
             relative
             overflow-hidden
             bg-white
+            dark:bg-gray-800
             rounded-lg
             shadow
             min-h-[400px]
@@ -152,7 +206,16 @@
             col-span-1
           "
         >
-          <div class="loader" />
+          <div
+            class="
+              loader
+              bg-gradient-to-r
+              from-white
+              to-white
+              via-gray-300
+              dark:from-gray-800 dark:to-gray-800 dark:via-gray-700
+            "
+          />
         </li>
       </ul>
     </main>

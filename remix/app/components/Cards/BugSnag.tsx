@@ -38,12 +38,12 @@ const BugReport: React.FC<Bug> = ({
     <li className='w-full'>
       <a
         href={url}
-        className='border-b border-l border-r py-2 px-4 flex items-center justify-between flex-row'
+        className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-center justify-between flex-row'
       >
         <div className='w-4/5'>
-          <p className='text-sm text-gray-700 w-full'>
+          <p className='text-sm text-gray-700 dark:text-gray-200 w-full'>
             <span
-              className={`rounded-full h-3 w-3 inline-block mr-1 mb-[-1px] ${
+              className={`rounded-full h-3 w-3 inline-block mr-2 mb-[-1px] ${
                 severity === 'error'
                   ? 'bg-red-500'
                   : severity === 'info'
@@ -53,11 +53,15 @@ const BugReport: React.FC<Bug> = ({
             ></span>
             {error_class} · {path}
           </p>
-          <p className='text-xs text-gray-500 mr-4 truncate'>{message}</p>
+          <p className='text-xs text-gray-500 dark:text-gray-300 mr-4 truncate'>
+            {message}
+          </p>
         </div>
 
         <div className='flex flex-row items-center justify-center'>
-          <p className='text-lg text-gray-700'>{events ?? 0}</p>
+          <p className='text-lg text-gray-700 dark:text-gray-300'>
+            {events ?? 0}
+          </p>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-5 w-5 ml-1 text-gray-500'

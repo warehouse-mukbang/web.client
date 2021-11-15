@@ -35,24 +35,29 @@ const StoryItem: React.FC<Story> = ({
     <li>
       <a
         href={url}
-        className='border-b border-l border-r py-2 px-4 flex items-center'
+        className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-center'
       >
-        <p className='text-sm text-gray-500 mr-4 w-[45px]'>{type}</p>
+        <p className='text-sm text-gray-500 dark:text-gray-300 mr-4 w-[45px]'>
+          {type}
+        </p>
 
-        <p className='truncate w-3/5'>{title}</p>
+        <p className='truncate w-3/5 dark:text-gray-100'>{title}</p>
 
         <div className='flex flex-grow justify-between ml-4 items-center'>
-          <p className='text-sm text-gray-500'>
-            Opened: <span className='text-gray-700'>{formatDate()}</span>
+          <p className='text-sm text-gray-500 dark:text-gray-500'>
+            Opened:{' '}
+            <span className='text-gray-700 dark:text-gray-300'>
+              {formatDate()}
+            </span>
           </p>
           <div className='text-sm flex'>
-            <p className='m-0 mr-1 p-0 flex items-end justify-center leading-4 text-gray-600'>
+            <p className='m-0 mr-1 p-0 flex items-end justify-center leading-4 text-gray-600 dark:text-gray-300'>
               {estimate ?? 0}
             </p>
             <span>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
-                className='h-6 w-6 text-gray-600'
+                className='h-6 w-6 text-gray-600 dark:text-gray-500'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
