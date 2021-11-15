@@ -101,7 +101,7 @@ Note: If you want to update styles, you'll need to open another terminal tab at 
 ## Roadmap
 
 - [ ] allow for dashboard customizations (eg: `GITHUB_ENABLED`, `GITHUB_POSITION` variables)
-- [ ] add dark mode
+- [x] add dark mode
 - [ ] host server for mobile version & long-term storage
 - [x] show loading states for cards fetching data
 - [ ] show empty states when no data is available
