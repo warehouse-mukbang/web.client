@@ -32,6 +32,7 @@ const PullRequestItem: React.FC<OpenPR> = ({
     <li>
       <a
         href={url}
+        target='_top'
         className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-center'
       >
         <p className='truncate w-2/5 dark:text-gray-200'>{title}</p>

@@ -35,6 +35,7 @@ const StoryItem: React.FC<Story> = ({
     <li>
       <a
         href={url}
+        target='_top'
         className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-center'
       >
         <p className='text-sm text-gray-500 dark:text-gray-300 mr-4 w-[45px]'>

@@ -38,6 +38,7 @@ const BugReport: React.FC<Bug> = ({
     <li className='w-full'>
       <a
         href={url}
+        target='_top'
         className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-center justify-between flex-row'
       >
         <div className='w-4/5'>
