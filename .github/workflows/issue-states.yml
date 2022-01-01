@@ -14,3 +14,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: dessant/issue-states@v2
+        with:
+          open-issue-columns: 'To Do, In Progress'
