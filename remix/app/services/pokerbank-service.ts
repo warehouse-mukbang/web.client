@@ -7,9 +7,9 @@ class PokerBankService implements APIService {
 
   async get(): Promise<{ users: PokerBankUser[] }> {
     const users = await (
-      await this.api(`https://poker-bank-api.fly.dev/users?limit=3`, {
+      await this.api(`https://poker-bank.fly.dev/api/users?limit=3`, {
         headers: {
-          token: process.env.POKERBANK_TOKEN as any,
+          Authorization: `Bearer ${process.env.POKERBANK_TOKEN}`,
         },
       })
     ).json();
