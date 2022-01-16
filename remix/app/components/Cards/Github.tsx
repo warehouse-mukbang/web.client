@@ -1,14 +1,28 @@
+import { API_Error } from '~/types/api';
 import { GithubData, OpenPR } from '~/types/cards/github';
 
 import * as Card from '../Card';
 
-const GithubCard: React.FC<GithubData> = ({ pr_count, open_prs }) => {
+const GithubCard: React.FC<Partial<GithubData & API_Error>> = ({
+  children,
+  ...props
+}) => {
+  if (props.error) {
+    return (
+      <Card.Base size='large'>
+        <Card.Header title='Something went wrong:' subtitle={props.message} />
+      </Card.Base>
+    );
+  }
+
+  const data = props as GithubData;
+
   return (
     <Card.Base size='large'>
-      <Card.Header title='PRs assigned to you:' subtitle={pr_count} />
+      <Card.Header title='PRs assigned to you:' subtitle={data.pr_count} />
 
       <ul className='max-h-full overflow-scroll'>
-        {open_prs.map(pr => (
+        {data.open_prs.map(pr => (
           <PullRequestItem {...pr} key={pr.url} />
         ))}
       </ul>

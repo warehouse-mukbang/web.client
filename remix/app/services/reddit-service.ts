@@ -1,13 +1,23 @@
-import type { API } from '~/types/api';
+import type { API, API_Error } from '~/types/api';
 import { Post } from '~/types/cards/reddit';
 import type { APIService } from './api-service.d';
 
 class RedditService implements APIService {
-  constructor(private readonly api: API) {}
+  constructor(private readonly api: API, private readonly subreddit: string) {}
 
-  async get(): Promise<Post> {
+  async get(): Promise<Partial<Post & API_Error>> {
+    if (!this.subreddit) {
+      return {
+        error: true,
+        service_name: 'reddit',
+        message: 'Missing or Invalid Reddit subreddit',
+      };
+    }
+
     const resp = await (
-      await this.api(`https://www.reddit.com/r/programmerhumor/hot.json?count=1`)
+      await this.api(
+        `https://www.reddit.com/r/${this.subreddit}/hot.json?count=1`
+      )
     ).json();
 
     const post = resp.data.children[0]?.data ?? {};

@@ -1,13 +1,25 @@
-import type { API } from '~/types/api';
+import type { API, API_Error } from '~/types/api';
 import { Story } from '~/types/cards/shortcut';
 import type { APIService } from './api-service.d';
 
 class ShortcutService implements APIService {
-  constructor(private readonly api: API) {}
+  constructor(
+    private readonly api: API,
+    private readonly username: string,
+    private readonly token: string
+  ) {}
 
-  async get(): Promise<Story[]> {
+  async get(): Promise<Partial<Story[] & API_Error>> {
+    if (!this.username || !this.token) {
+      return {
+        error: true,
+        service_name: 'shortcut',
+        message: 'Missing or Invalid Shortcut username or token',
+      };
+    }
+
     const querystring = encodeURIComponent(
-      `owner:${process.env.SHORTCUT_USERNAME} !is:done !is:archived`
+      `owner:${this.username} !is:done !is:archived`
     );
 
     const data = await (
@@ -15,7 +27,7 @@ class ShortcutService implements APIService {
         `https://api.app.shortcut.com/api/v3/search/stories?query=${querystring}`,
         {
           headers: {
-            'Shortcut-Token': process.env.SHORTCUT_TOKEN as any,
+            'Shortcut-Token': this.token,
           },
         }
       )

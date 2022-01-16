@@ -1,8 +1,22 @@
+import { API_Error } from '~/types/api';
 import { OnCallSchedule, OnCall, OnCallUser } from '~/types/cards/pagerduty';
 
 import * as Card from '../Card';
 
-const PagerDutyCard: React.FC<OnCallSchedule> = ({ current, next }) => {
+const PagerDutyCard: React.FC<Partial<OnCallSchedule & API_Error>> = ({
+  children,
+  ...props
+}) => {
+  if (props.error) {
+    return (
+      <Card.Base size='small'>
+        <Card.Header title='Something went wrong:' subtitle={props.message} />
+      </Card.Base>
+    );
+  }
+
+  const { current, next } = props as OnCallSchedule;
+
   return (
     <Card.Base size='small'>
       <Card.Header title='Current On-Call' />
@@ -26,6 +40,7 @@ const OnCall: React.FC<OnCall> = ({ start, end, user }) => {
       dateStyle: 'medium',
     }).format(new Date(end));
   };
+
   return (
     <div className='border-b border-l border-r dark:border-gray-500 py-2 px-4 flex items-between w-full'>
       <p className='truncate w-1/2 dark:text-gray-300'>{user.summary}</p>

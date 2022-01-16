@@ -1,17 +1,37 @@
-import type { API } from '~/types/api';
+import type { API, API_Error } from '~/types/api';
 import { Bug } from '~/types/cards/bugsnag';
 import type { APIService } from './api-service.d';
 
 class BugSnagService implements APIService {
-  constructor(private readonly api: API) {}
+  constructor(
+    private readonly api: API,
+    private readonly organization_name: string,
+    private readonly project_name: string,
+    private readonly project_id: string,
+    private readonly token: string
+  ) {}
 
-  async get(): Promise<{ bugs: Bug[]; error?: boolean }> {
+  async get(): Promise<Partial<{ bugs: Bug[] } & API_Error>> {
+    if (
+      !this.organization_name ||
+      !this.project_name ||
+      !this.project_id ||
+      !this.token
+    ) {
+      return {
+        error: true,
+        service_name: 'bugsnag',
+        message:
+          'Missing or Invalid BugSnag organization_name, project_name, project_id or token',
+      };
+    }
+
     const bugs = await (
       await this.api(
-        `https://api.bugsnag.com/projects/${process.env.BUGSNAG_PROJECT_ID}/errors?filters[error.status]=new&filters[event.since]=1d&filters[app.release_stage]=production&sort=events`,
+        `https://api.bugsnag.com/projects/${this.project_id}/errors?filters[error.status]=new&filters[event.since]=1d&filters[app.release_stage]=production&sort=events`,
         {
           headers: {
-            Authorization: `token ${process.env.BUGSNAG_TOKEN}`,
+            Authorization: `token ${this.token}`,
           },
         }
       )
@@ -19,8 +39,9 @@ class BugSnagService implements APIService {
 
     if (bugs.errors) {
       return {
-        bugs: [],
         error: true,
+        service_name: 'bugsnag',
+        message: bugs.errors[0].message,
       };
     }
 
@@ -32,7 +53,7 @@ class BugSnagService implements APIService {
         error_class: bug.error_class,
         severity: bug.severity,
         path: bug.context,
-        url: `https://app.bugsnag.com/${process.env.BUGSNAG_ORGANIZATION_NAME}/${process.env.BUGSNAG_PROJECT_NAME}/errors/${bug.id}`,
+        url: `https://app.bugsnag.com/${this.organization_name}/${this.project_name}/errors/${bug.id}`,
       })),
     };
   }
