@@ -24,6 +24,7 @@ import { Bug } from '~/types/cards/bugsnag';
 import PokerBankService from '~/services/pokerbank-service';
 import PokerBank from '~/components/Cards/PokerBank';
 import { PokerBankUser } from '~/types/cards/pokerbank';
+import { API_Error } from '~/types/api';
 
 export let meta: MetaFunction = () => {
   return {
@@ -32,21 +33,45 @@ export let meta: MetaFunction = () => {
 };
 
 interface PageData {
-  github: GithubData;
-  shortcut: Story[];
-  reddit: Post;
-  pagerduty: OnCallSchedule;
-  bugsnag: { bugs: Bug[]; error?: boolean };
-  pokerbank: { users: PokerBankUser[] };
+  github: Partial<GithubData & API_Error>;
+  shortcut: Partial<{ stories: Story[] } & API_Error>;
+  reddit: Partial<{ post: Post } & API_Error>;
+  pagerduty: Partial<OnCallSchedule & API_Error>;
+  bugsnag: Partial<{ bugs: Bug[] } & API_Error>;
+  pokerbank: Partial<{ users: PokerBankUser[] } & API_Error>;
 }
 
 export let loader: LoaderFunction = async (): Promise<PageData> => {
-  const github_service = new GithubService(fetch);
-  const shortcut_service = new ShortcutService(fetch);
-  const reddit_service = new RedditService(fetch);
-  const pagerduty_service = new PagerDutyService(fetch);
-  const bugsnag_service = new BugSnagService(fetch);
-  const pokerbank_service = new PokerBankService(fetch);
+  const github_service = new GithubService(
+    fetch,
+    process.env.GITHUB_USERNAME as string,
+    process.env.GITHUB_TOKEN as string
+  );
+  const shortcut_service = new ShortcutService(
+    fetch,
+    process.env.SHORTCUT_USERNAME as string,
+    process.env.SHORTCUT_TOKEN as string
+  );
+  const reddit_service = new RedditService(
+    fetch,
+    process.env.REDDIT_SUBREDDIT as string
+  );
+  const pagerduty_service = new PagerDutyService(
+    fetch,
+    process.env.PAGERDUTY_SCHEDULE as string,
+    process.env.PAGERDUTY_TOKEN as string
+  );
+  const bugsnag_service = new BugSnagService(
+    fetch,
+    process.env.BUGSNAG_ORGANIZATION_NAME as string,
+    process.env.BUGSNAG_PROJECT_NAME as string,
+    process.env.BUGSNAG_PROJECT_ID as string,
+    process.env.BUGSNAG_TOKEN as string
+  );
+  const pokerbank_service = new PokerBankService(
+    fetch,
+    process.env.POKERBANK_TOKEN as string
+  );
 
   const [github, shortcut, reddit, pagerduty, bugsnag, pokerbank] =
     await Promise.all([
@@ -60,8 +85,10 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
 
   return {
     github,
-    shortcut,
-    reddit,
+    shortcut: Array.isArray(shortcut) ? { stories: shortcut } : shortcut,
+    reddit: (reddit as any).error
+      ? (reddit as API_Error)
+      : { post: reddit as Post },
     pagerduty,
     bugsnag,
     pokerbank,
@@ -78,8 +105,8 @@ export default function Index() {
         className='grid grid-cols-2 xl:grid-cols-4 gap-4 items-center justify-center h-full'
       >
         <Github {...data.github} />
-        <Shortcut stories={data.shortcut} />
-        <Reddit post={data.reddit} />
+        <Shortcut {...data.shortcut} />
+        <Reddit {...data.reddit} />
         <PagerDuty {...data.pagerduty} />
         <BugSnag {...data.bugsnag} />
         <PokerBank {...data.pokerbank} />

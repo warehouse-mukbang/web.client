@@ -1,13 +1,25 @@
-import type { API } from '~/types/api';
+import type { API, API_Error } from '~/types/api';
 import { GithubData } from '~/types/cards/github';
 import type { APIService } from './api-service.d';
 
 class GithubService implements APIService {
-  constructor(private readonly api: API) {}
+  constructor(
+    private readonly api: API,
+    private readonly username: string,
+    private readonly token: string
+  ) {}
 
-  async get(): Promise<GithubData> {
+  async get(): Promise<Partial<GithubData & API_Error>> {
+    if (!this.username || !this.token) {
+      return {
+        error: true,
+        service_name: 'github',
+        message: 'Missing or Invalid Github username or token',
+      };
+    }
+
     const querystring = encodeURIComponent(
-      `is:open is:pr review-requested:${process.env.GITHUB_USERNAME} archived:false`
+      `is:open is:pr review-requested:${this.username} archived:false`
     );
 
     const data = await (
@@ -15,7 +27,7 @@ class GithubService implements APIService {
         `https://api.github.com/search/issues?q=${querystring}&type=pr`,
         {
           headers: {
-            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+            Authorization: `token ${this.token}`,
           },
         }
       )

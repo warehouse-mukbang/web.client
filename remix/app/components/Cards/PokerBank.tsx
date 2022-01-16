@@ -1,8 +1,22 @@
+import { API_Error } from '~/types/api';
 import { PokerBankUser } from '~/types/cards/pokerbank';
 
 import * as Card from '../Card';
 
-const PokerBank: React.FC<{ users: PokerBankUser[] }> = ({ users }) => {
+const PokerBank: React.FC<Partial<{ users: PokerBankUser[] }> & API_Error> = ({
+  children,
+  ...props
+}) => {
+  if (props.error) {
+    return (
+      <Card.Base size='small'>
+        <Card.Header title='Something went wrong:' subtitle={props.message} />
+      </Card.Base>
+    );
+  }
+
+  const { users } = props as { users: PokerBankUser[] };
+
   const formatBank = (bank: PokerBankUser['bank']) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',

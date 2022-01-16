@@ -1,10 +1,25 @@
+import { API_Error } from '~/types/api';
 import { Story } from '~/types/cards/shortcut';
 
 import * as Card from '../Card';
 
-const ShortcutCard: React.FC<{
-  stories: Story[];
-}> = ({ stories }) => {
+const ShortcutCard: React.FC<
+  Partial<
+    {
+      stories: Story[];
+    } & API_Error
+  >
+> = ({ children, ...props }) => {
+  if (props.error) {
+    return (
+      <Card.Base size='large'>
+        <Card.Header title='Something went wrong:' subtitle={props.message} />
+      </Card.Base>
+    );
+  }
+
+  const { stories } = props as { stories: Story[] };
+
   return (
     <Card.Base size='large'>
       <Card.Header title='Your Shortcut Stories:' subtitle={stories.length} />

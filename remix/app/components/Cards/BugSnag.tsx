@@ -1,21 +1,31 @@
+import { API_Error } from '~/types/api';
 import { Bug } from '~/types/cards/bugsnag';
 
 import * as Card from '../Card';
 
-const BugSnagCard: React.FC<{ bugs: Bug[]; error?: boolean }> = ({
-  bugs,
-  error,
+const BugSnagCard: React.FC<Partial<{ bugs: Bug[] } & API_Error>> = ({
+  children,
+  ...props
 }) => {
+  if (props.error) {
+    return (
+      <Card.Base size='large'>
+        <Card.Header
+          title={'Something went wrong:'}
+          subtitle={
+            props.message ||
+            'Unable to fetch. Exceeded API rate limit. Try refeshing in 15s'
+          }
+        />
+      </Card.Base>
+    );
+  }
+
+  const { bugs } = props as { bugs: Bug[] };
+
   return (
     <Card.Base size='large'>
-      <Card.Header
-        title={'Bugs Introduced Today' + (error ? ':' : '')}
-        subtitle={
-          error
-            ? 'Unable to fetch. Exceeded API rate limit. Try refeshing in 15s'
-            : undefined
-        }
-      />
+      <Card.Header title='Bugs Introduced Today' />
 
       <ul className='flex-1 overflow-hidden flex flex-col items-center list-none'>
         {bugs.map(bug => (

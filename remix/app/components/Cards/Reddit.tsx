@@ -1,10 +1,25 @@
+import { API_Error } from '~/types/api';
 import { Post } from '~/types/cards/reddit';
 
 import * as Card from '../Card';
 
-const RedditCard: React.FC<{
-  post: Post;
-}> = ({ post }) => {
+const RedditCard: React.FC<
+  Partial<
+    {
+      post: Post;
+    } & API_Error
+  >
+> = ({ children, ...props }) => {
+  if (props.error) {
+    return (
+      <Card.Base size='small'>
+        <Card.Header title='Something went wrong:' subtitle={props.message} />
+      </Card.Base>
+    );
+  }
+
+  const { post } = props as { post: Post };
+
   return (
     <Card.Base size='small'>
       <Card.Header title='Trending on' subtitle='r/ProgrammerHumor' />
