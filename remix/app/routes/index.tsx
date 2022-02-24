@@ -13,10 +13,6 @@ import RedditService from '~/services/reddit-service';
 import Reddit from '~/components/Cards/Reddit';
 import { Post } from '~/types/cards/reddit';
 
-import PagerDutyService from '~/services/pagerduty-service';
-import PagerDuty from '~/components/Cards/PagerDuty';
-import { OnCallSchedule } from '~/types/cards/pagerduty';
-
 import BugSnagService from '~/services/bugsnag-service';
 import BugSnag from '~/components/Cards/BugSnag';
 import { Bug } from '~/types/cards/bugsnag';
@@ -25,6 +21,10 @@ import PokerBankService from '~/services/pokerbank-service';
 import PokerBank from '~/components/Cards/PokerBank';
 import { PokerBankUser } from '~/types/cards/pokerbank';
 import { API_Error } from '~/types/api';
+
+import OpsGenieService from '~/services/opsgenie-service';
+import OpsGenie from '~/components/Cards/OpsGenie';
+import { OnCallSchedule } from '~/types/cards/opsgenie';
 
 export let meta: MetaFunction = () => {
   return {
@@ -36,7 +36,7 @@ interface PageData {
   github: Partial<GithubData & API_Error>;
   shortcut: Partial<{ stories: Story[] } & API_Error>;
   reddit: Partial<{ post: Post } & API_Error>;
-  pagerduty: Partial<OnCallSchedule & API_Error>;
+  opsgenie: Partial<OnCallSchedule & API_Error>;
   bugsnag: Partial<{ bugs: Bug[] } & API_Error>;
   pokerbank: Partial<{ users: PokerBankUser[] } & API_Error>;
 }
@@ -56,11 +56,6 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
     fetch,
     process.env.REDDIT_SUBREDDIT as string
   );
-  const pagerduty_service = new PagerDutyService(
-    fetch,
-    process.env.PAGERDUTY_SCHEDULE as string,
-    process.env.PAGERDUTY_TOKEN as string
-  );
   const bugsnag_service = new BugSnagService(
     fetch,
     process.env.BUGSNAG_ORGANIZATION_NAME as string,
@@ -72,15 +67,20 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
     fetch,
     process.env.POKERBANK_TOKEN as string
   );
+  const opsgenie_service = new OpsGenieService(
+    fetch,
+    process.env.OPSGENIE_SCHEDULE as string,
+    process.env.OPSGENIE_TOKEN as string
+  );
 
-  const [github, shortcut, reddit, pagerduty, bugsnag, pokerbank] =
+  const [github, shortcut, reddit, bugsnag, pokerbank, opsgenie] =
     await Promise.all([
       github_service.get(),
       shortcut_service.get(),
       reddit_service.get(),
-      pagerduty_service.get(),
       bugsnag_service.get(),
       pokerbank_service.get(),
+      opsgenie_service.get(),
     ]);
 
   return {
@@ -89,7 +89,7 @@ export let loader: LoaderFunction = async (): Promise<PageData> => {
     reddit: (reddit as any).error
       ? (reddit as API_Error)
       : { post: reddit as Post },
-    pagerduty,
+    opsgenie,
     bugsnag,
     pokerbank,
   };
@@ -107,7 +107,7 @@ export default function Index() {
         <Github {...data.github} />
         <Shortcut {...data.shortcut} />
         <Reddit {...data.reddit} />
-        <PagerDuty {...data.pagerduty} />
+        <OpsGenie {...data.opsgenie} />
         <BugSnag {...data.bugsnag} />
         <PokerBank {...data.pokerbank} />
       </ul>
