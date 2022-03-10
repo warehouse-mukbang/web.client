@@ -43,41 +43,83 @@ class OpsGenieService implements APIService {
       return [await schedules[0].json(), await schedules[1].json()];
     });
 
-    const currentName = this.api(
-      `https://api.opsgenie.com/v2/users/${currentOnCallResponse.data.onCallParticipants[0].id}`,
+    const currentResponses = currentOnCallResponse.data.onCallParticipants.map(
+      (participant: any) => {
+        return this.api(`https://api.opsgenie.com/v2/users/${participant.id}`, {
+          headers: {
+            Authorization: `GenieKey ${this.token}`,
+          },
+        });
+      }
+    );
+
+    const nextResponses = nextOnCallResponse.data.nextOnCallRecipients.map(
+      (participant: any) => {
+        return this.api(`https://api.opsgenie.com/v2/users/${participant.id}`, {
+          headers: {
+            Authorization: `GenieKey ${this.token}`,
+          },
+        });
+      }
+    );
+
+    const currentUsers = await Promise.all(currentResponses).then(
+      async responses => {
+        return await responses.map(async response => await response.json());
+      }
+    );
+
+    const nextUsers = await Promise.all(nextResponses).then(async responses => {
+      return await responses.map(async response => await response.json());
+    });
+
+    const currentUserResponses = await Promise.all(currentUsers);
+    const nextUserResponses = await Promise.all(nextUsers);
+
+    const timeline = await this.api(
+      `https://api.opsgenie.com/v2/schedules/${this.schedule}/timeline?interval=2&intervalUnit=weeks`,
       {
         headers: {
           Authorization: `GenieKey ${this.token}`,
         },
       }
-    );
-
-    const nextName = this.api(
-      `https://api.opsgenie.com/v2/users/${nextOnCallResponse.data.nextOnCallRecipients[0].id}`,
-      {
-        headers: {
-          Authorization: `GenieKey ${this.token}`,
-        },
-      }
-    );
-
-    const [current, next] = await Promise.all([currentName, nextName]).then(
-      async users => {
-        return [await users[0].json(), await users[1].json()];
-      }
-    );
+    ).then(async response => await response.json());
 
     return {
-      current: {
-        user: {
-          name: current.data.fullName
-        }
-      },
-      next: {
-        user: {
-          name: next.data.fullName
-        }
-      },
+      current: currentUserResponses.map((user, index) => {
+        const periods = timeline.data.finalTimeline.rotations[index]
+          .periods as Array<any>;
+
+        const endDate = periods
+          .reverse()
+          .find(period => period.recipient.id === user.data.id)?.endDate;
+
+        return {
+          user: {
+            name: user.data.fullName,
+            endDate: endDate || undefined,
+          },
+        };
+      }),
+      next: nextUserResponses.map((user, index) => {
+        const periods = timeline.data.finalTimeline.rotations[index]
+          .periods as Array<any>;
+
+        const endDate = periods
+          .reverse()
+          .find(
+            period =>
+              period.recipient.id === user.data.id &&
+              period.type !== 'historical'
+          )?.endDate;
+
+        return {
+          user: {
+            name: user.data.fullName,
+            endDate: endDate || undefined,
+          },
+        };
+      }),
     };
   }
 }

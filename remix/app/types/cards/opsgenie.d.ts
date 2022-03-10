@@ -1,5 +1,6 @@
 interface OnCallUser {
   name: string;
+  endDate?: date;
 }
 
 interface OnCall {
@@ -7,8 +8,8 @@ interface OnCall {
 }
 
 interface OnCallSchedule {
-  current: OnCall;
-  next: OnCall;
+  current: OnCall[];
+  next: OnCall[];
 }
 
 export { OnCallSchedule, OnCall, OnCallUser };

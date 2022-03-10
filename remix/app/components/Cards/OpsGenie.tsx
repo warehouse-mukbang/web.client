@@ -17,41 +17,32 @@ const OpsGenieCard: React.FC<Partial<OnCallSchedule & API_Error>> = ({
 
   const { current, next } = props as OnCallSchedule;
 
-  const currentUntil = new Date();
-  currentUntil.setDate(
-    currentUntil.getDate() + ((((7 - currentUntil.getDay()) % 7) + 1) % 7)
-  );
-
-  const nextUntil = new Date();
-  nextUntil.setDate(
-    nextUntil.getDate() + ((((7 - nextUntil.getDay()) % 7) + 1) % 7)
-  );
-  nextUntil.setDate(
-    nextUntil.getDate() + 7
-  )
-
   return (
     <Card.Base size='small'>
       <Card.Header title='Current On-Call' />
 
       <div className='flex-1 overflow-hidden flex flex-col items-center'>
-        <OnCall {...current} until={currentUntil} />
+        {current.map(call => (
+          <OnCall {...call} />
+        ))}
       </div>
 
       <Card.Header title='Next On-Call' />
 
       <div className='flex-1 overflow-hidden flex flex-col items-center'>
-        <OnCall {...next} until={nextUntil} />
+        {next.map(call => (
+          <OnCall {...call} />
+        ))}
       </div>
     </Card.Base>
   );
 };
 
-const OnCall: React.FC<OnCall & { until: Date }> = ({ user, until }) => {
+const OnCall: React.FC<OnCall> = ({ user }) => {
   const formattedDate = () => {
     return new Intl.DateTimeFormat('en-US', {
       dateStyle: 'medium',
-    }).format(until);
+    }).format(new Date(user.endDate));
   };
 
   return (
