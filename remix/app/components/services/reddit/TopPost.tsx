@@ -1,7 +1,11 @@
-import { API_Error } from '~/types/api';
-import { Post } from '~/types/cards/reddit';
+// ================================================== //
+// ============== TODO THIS IS NOT MVP ============== //
+// ================================================== //
 
-import * as Card from '../Card';
+import { API_Error } from '~/types/api';
+import { Post } from '~/types/services/reddit';
+
+import * as Card from '../../Card';
 
 const RedditCard: React.FC<
   Partial<

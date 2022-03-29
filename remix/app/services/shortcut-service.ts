@@ -1,5 +1,5 @@
 import type { API, API_Error } from '~/types/api';
-import { Story } from '~/types/cards/shortcut';
+import { Story } from '~/types/services/shortcut';
 import type { APIService } from './api-service.d';
 
 class ShortcutService implements APIService {
@@ -33,7 +33,7 @@ class ShortcutService implements APIService {
       )
     ).json();
 
-    return data.data.map((story: any) => ({
+    return data.data?.map((story: any) => ({
       url: story.app_url,
       title: story.name,
       created_at: story.created_at,

@@ -1,5 +1,5 @@
 import type { API, API_Error } from '~/types/api';
-import { GithubData } from '~/types/cards/github';
+import { GithubData } from '~/types/services/github';
 import type { APIService } from './api-service.d';
 
 class GithubService implements APIService {
@@ -35,7 +35,7 @@ class GithubService implements APIService {
 
     return {
       pr_count: data.total_count,
-      open_prs: data.items.map((item: any) => ({
+      open_prs: data.items?.map((item: any) => ({
         url: item.html_url,
         title: item.title,
         author: {

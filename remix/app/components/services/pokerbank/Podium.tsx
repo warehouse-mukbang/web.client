@@ -1,7 +1,11 @@
-import { API_Error } from '~/types/api';
-import { PokerBankUser } from '~/types/cards/pokerbank';
+// ================================================== //
+// ============== TODO THIS IS NOT MVP ============== //
+// ================================================== //
 
-import * as Card from '../Card';
+import { API_Error } from '~/types/api';
+import { PokerBankUser } from '~/types/services/pokerbank';
+
+import * as Card from '../../Card';
 
 const PokerBank: React.FC<Partial<{ users: PokerBankUser[] }> & API_Error> = ({
   children,

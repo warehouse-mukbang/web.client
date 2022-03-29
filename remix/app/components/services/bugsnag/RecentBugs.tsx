@@ -1,7 +1,11 @@
-import { API_Error } from '~/types/api';
-import { Bug } from '~/types/cards/bugsnag';
+// ================================================== //
+// ============== TODO THIS IS NOT MVP ============== //
+// ================================================== //
 
-import * as Card from '../Card';
+import { API_Error } from '~/types/api';
+import { Bug } from '~/types/services/bugsnag';
+
+import * as Card from '../../Card';
 
 const BugSnagCard: React.FC<Partial<{ bugs: Bug[] } & API_Error>> = ({
   children,
@@ -28,7 +32,7 @@ const BugSnagCard: React.FC<Partial<{ bugs: Bug[] } & API_Error>> = ({
       <Card.Header title='Bugs Introduced Today' />
 
       <ul className='flex-1 overflow-hidden flex flex-col items-center list-none'>
-        {bugs.map(bug => (
+        {bugs?.map(bug => (
           <BugReport {...bug} key={bug.id} />
         ))}
       </ul>

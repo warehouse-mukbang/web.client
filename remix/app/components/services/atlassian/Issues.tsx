@@ -1,7 +1,11 @@
-import { API_Error } from '~/types/api';
-import { Story } from '~/types/cards/shortcut';
+// ================================================== //
+// ===== TODO THIS NEEDS TO BE CONVERTED TO JIRA ==== //
+// ================================================== //
 
-import * as Card from '../Card';
+import { API_Error } from '~/types/api';
+import { Story } from '~/types/services/shortcut';
+
+import * as Card from '../../Card';
 
 const ShortcutCard: React.FC<
   Partial<
@@ -22,10 +26,13 @@ const ShortcutCard: React.FC<
 
   return (
     <Card.Base size='large'>
-      <Card.Header title='Your Shortcut Stories:' subtitle={stories.length} />
+      <Card.Header
+        title='Your Shortcut Stories:'
+        subtitle={stories?.length || 0}
+      />
 
       <ul className='max-h-full overflow-scroll'>
-        {stories.map(story => (
+        {stories?.map(story => (
           <StoryItem {...story} key={story.url} />
         ))}
       </ul>
