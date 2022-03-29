@@ -1,4 +1,4 @@
-# NewTab Chrome Extension: Vitals Dashboard
+# Widget Board
 
 This repo contains the code (front- and back-end) necessary to override the `newtab` page in Chromium browsers.
 
