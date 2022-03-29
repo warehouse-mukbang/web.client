@@ -1,4 +1,4 @@
-import { LoaderFunction } from 'remix';
+import { LoaderFunction, redirect } from 'remix';
 
 import APIService from '~/services/api-service';
 import GithubService from '~/services/github-service';
@@ -18,11 +18,7 @@ export const loader: LoaderFunction = async () => {
     process.env.GITHUB_TOKEN
   );
 
-  const data = await github.get_prs();
+  const url = github.oauth_init();
 
-  return {
-    success: true,
-    error: null,
-    body: data,
-  };
+  return redirect(url);
 };

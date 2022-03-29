@@ -1,8 +1,7 @@
 import type { API, API_Error } from '~/types/api';
 import { OnCallSchedule } from '~/types/services/pagerduty';
-import type { APIService } from './api-service.d';
 
-class PagerDutyService implements APIService {
+class PagerDutyService {
   constructor(
     private readonly api: API,
     private readonly schedule: string,

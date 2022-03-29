@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFetcher } from 'remix';
 
-import { OpenPR } from '~/types/services/github';
+import { PullRequest } from '~/services/github-service.d';
 
 import * as Card from '../../Card';
 
@@ -9,7 +9,7 @@ const PullRequests: React.FC = () => {
   const fetcher = useFetcher();
   const [error, set_error] = useState<string>();
   const [pr_count, set_pr_count] = useState<number | string>('~');
-  const [open_prs, set_open_prs] = useState<Array<OpenPR>>([]);
+  const [open_prs, set_open_prs] = useState<Array<PullRequest>>([]);
 
   useEffect(() => {
     fetcher.load('/api/services/github/pull-requests');
@@ -50,7 +50,7 @@ const PullRequests: React.FC = () => {
   );
 };
 
-const PullRequestItem: React.FC<OpenPR> = ({
+const PullRequestItem: React.FC<PullRequest> = ({
   url,
   title,
   author,

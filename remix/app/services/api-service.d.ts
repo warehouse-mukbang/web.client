@@ -1,5 +1,6 @@
 interface APIService {
-  get(): Promise<any>;
+  get(url: RequestInfo, init?: Omit<RequestInit, 'method'>): Promise<Response>;
+  post(url: RequestInfo, init?: Omit<RequestInit, 'method'>): Promise<Response>;
 }
 
 export { APIService };
