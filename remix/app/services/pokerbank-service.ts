@@ -1,5 +1,5 @@
 import type { API, API_Error } from '~/types/api';
-import { PokerBankUser } from '~/types/cards/pokerbank';
+import { PokerBankUser } from '~/types/services/pokerbank';
 import type { APIService } from './api-service.d';
 
 class PokerBankService implements APIService {

@@ -1,6 +1,6 @@
 interface OnCallUser {
   name: string;
-  endDate?: date;
+  endDate: Date;
 }
 
 interface OnCall {

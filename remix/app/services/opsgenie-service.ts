@@ -1,5 +1,5 @@
 import type { API, API_Error } from '~/types/api';
-import { OnCallSchedule } from '~/types/cards/opsgenie';
+import { OnCallSchedule } from '~/types/services/opsgenie';
 import type { APIService } from './api-service.d';
 
 class OpsGenieService implements APIService {
@@ -43,7 +43,7 @@ class OpsGenieService implements APIService {
       return [await schedules[0].json(), await schedules[1].json()];
     });
 
-    const currentResponses = currentOnCallResponse.data.onCallParticipants.map(
+    const currentResponses = currentOnCallResponse.data.onCallParticipants?.map(
       (participant: any) => {
         return this.api(`https://api.opsgenie.com/v2/users/${participant.id}`, {
           headers: {
@@ -53,7 +53,7 @@ class OpsGenieService implements APIService {
       }
     );
 
-    const nextResponses = nextOnCallResponse.data.nextOnCallRecipients.map(
+    const nextResponses = nextOnCallResponse.data.nextOnCallRecipients?.map(
       (participant: any) => {
         return this.api(`https://api.opsgenie.com/v2/users/${participant.id}`, {
           headers: {
@@ -65,12 +65,12 @@ class OpsGenieService implements APIService {
 
     const currentUsers = await Promise.all(currentResponses).then(
       async responses => {
-        return await responses.map(async response => await response.json());
+        return await responses?.map(async response => await response.json());
       }
     );
 
     const nextUsers = await Promise.all(nextResponses).then(async responses => {
-      return await responses.map(async response => await response.json());
+      return await responses?.map(async response => await response.json());
     });
 
     const currentUserResponses = await Promise.all(currentUsers);
@@ -86,7 +86,7 @@ class OpsGenieService implements APIService {
     ).then(async response => await response.json());
 
     return {
-      current: currentUserResponses.map((user, index) => {
+      current: currentUserResponses?.map((user, index) => {
         const periods = timeline.data.finalTimeline.rotations[index]
           .periods as Array<any>;
 
@@ -101,7 +101,7 @@ class OpsGenieService implements APIService {
           },
         };
       }),
-      next: nextUserResponses.map((user, index) => {
+      next: nextUserResponses?.map((user, index) => {
         const periods = timeline.data.finalTimeline.rotations[index]
           .periods as Array<any>;
 

@@ -1,28 +1,48 @@
-import { API_Error } from '~/types/api';
-import { GithubData, OpenPR } from '~/types/cards/github';
+import { useEffect, useState } from 'react';
+import { useFetcher } from 'remix';
 
-import * as Card from '../Card';
+import { OpenPR } from '~/types/services/github';
 
-const GithubCard: React.FC<Partial<GithubData & API_Error>> = ({
-  children,
-  ...props
-}) => {
-  if (props.error) {
+import * as Card from '../../Card';
+
+const PullRequests: React.FC = () => {
+  const fetcher = useFetcher();
+  const [error, set_error] = useState<string>();
+  const [pr_count, set_pr_count] = useState<number | string>('~');
+  const [open_prs, set_open_prs] = useState<Array<OpenPR>>([]);
+
+  useEffect(() => {
+    fetcher.load('/api/services/github/pull-requests');
+  }, []);
+
+  useEffect(() => {
+    if (fetcher.type !== 'done') {
+      return;
+    }
+
+    if (fetcher.data.error) {
+      set_error(fetcher.data.error);
+      return;
+    }
+
+    set_pr_count(fetcher.data.body.pr_count);
+    set_open_prs(fetcher.data.body.open_prs);
+  }, [fetcher.type]);
+
+  if (error) {
     return (
       <Card.Base size='large'>
-        <Card.Header title='Something went wrong:' subtitle={props.message} />
+        <Card.Header title='Something went wrong:' subtitle={error} />
       </Card.Base>
     );
   }
 
-  const data = props as GithubData;
-
   return (
     <Card.Base size='large'>
-      <Card.Header title='PRs assigned to you:' subtitle={data.pr_count} />
+      <Card.Header title='PRs assigned to you:' subtitle={pr_count} />
 
       <ul className='max-h-full overflow-scroll'>
-        {data.open_prs.map(pr => (
+        {open_prs?.map(pr => (
           <PullRequestItem {...pr} key={pr.url} />
         ))}
       </ul>
@@ -88,4 +108,4 @@ const PullRequestItem: React.FC<OpenPR> = ({
   );
 };
 
-export default GithubCard;
+export default PullRequests;

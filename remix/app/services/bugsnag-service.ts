@@ -1,5 +1,5 @@
 import type { API, API_Error } from '~/types/api';
-import { Bug } from '~/types/cards/bugsnag';
+import { Bug } from '~/types/services/bugsnag';
 import type { APIService } from './api-service.d';
 
 class BugSnagService implements APIService {
@@ -46,7 +46,7 @@ class BugSnagService implements APIService {
     }
 
     return {
-      bugs: bugs.map((bug: any) => ({
+      bugs: bugs?.map((bug: any) => ({
         id: bug.id,
         message: bug.message,
         events: bug.events,
