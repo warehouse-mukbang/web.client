@@ -2,7 +2,7 @@ import type { API, API_Error } from '~/types/api';
 import { Bug } from '~/types/services/bugsnag';
 import type { APIService } from './api-service.d';
 
-class BugSnagService implements APIService {
+class BugSnagService {
   constructor(
     private readonly api: API,
     private readonly organization_name: string,

@@ -1,8 +1,7 @@
 import type { API, API_Error } from '~/types/api';
 import { Story } from '~/types/services/shortcut';
-import type { APIService } from './api-service.d';
 
-class ShortcutService implements APIService {
+class ShortcutService {
   constructor(
     private readonly api: API,
     private readonly username: string,

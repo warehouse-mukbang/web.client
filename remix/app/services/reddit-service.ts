@@ -1,8 +1,7 @@
 import type { API, API_Error } from '~/types/api';
 import { Post } from '~/types/services/reddit';
-import type { APIService } from './api-service.d';
 
-class RedditService implements APIService {
+class RedditService {
   constructor(private readonly api: API, private readonly subreddit: string) {}
 
   async get(): Promise<Partial<Post & API_Error>> {

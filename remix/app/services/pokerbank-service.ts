@@ -1,8 +1,7 @@
 import type { API, API_Error } from '~/types/api';
 import { PokerBankUser } from '~/types/services/pokerbank';
-import type { APIService } from './api-service.d';
 
-class PokerBankService implements APIService {
+class PokerBankService {
   constructor(private readonly api: API, private readonly token: string) {}
 
   async get(): Promise<Partial<{ users: PokerBankUser[] } & API_Error>> {

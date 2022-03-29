@@ -1,33 +1,49 @@
-import type { API, API_Error } from '~/types/api';
-import { GithubData } from '~/types/services/github';
+import {
+  GithubPullRequests,
+  GithubIssues,
+  GithubService as IGithubService,
+} from './github-service.d';
 import type { APIService } from './api-service.d';
+import { User } from './database-service.d';
 
-class GithubService implements APIService {
-  constructor(
-    private readonly api: API,
-    private readonly username: string,
-    private readonly token: string
-  ) {}
+class GithubService implements IGithubService {
+  constructor(private readonly api: APIService, private readonly user?: User) {}
 
-  async get(): Promise<Partial<GithubData & API_Error>> {
-    if (!this.username || !this.token) {
-      return {
-        error: true,
-        service_name: 'github',
-        message: 'Missing or Invalid Github username or token',
-      };
+  oauth_init() {
+    const url = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=repo user read:org`;
+
+    return url;
+  }
+
+  async oauth_confirm(auth_code: string): Promise<string> {
+    const url = `https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${auth_code}`;
+
+    const response = await this.api.post(url, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    const { access_token } = await response.json();
+
+    return access_token;
+  }
+
+  async get_prs(): Promise<GithubPullRequests> {
+    if (!this.user) {
+      throw new Error('Missing or Invalid Github Authorization');
     }
 
     const querystring = encodeURIComponent(
-      `is:open is:pr review-requested:${this.username} archived:false`
+      `is:open is:pr review-requested:${this.user.username} archived:false`
     );
 
     const data = await (
-      await this.api(
+      await this.api.get(
         `https://api.github.com/search/issues?q=${querystring}&type=pr`,
         {
           headers: {
-            Authorization: `token ${this.token}`,
+            Authorization: `token ${this.user.oauth_token}`,
           },
         }
       )
@@ -46,6 +62,11 @@ class GithubService implements APIService {
         created_at: item.created_at,
       })),
     };
+  }
+
+  // TODO: IMPLEMENT THIS
+  async get_issues(): Promise<GithubIssues> {
+    return {};
   }
 }
 

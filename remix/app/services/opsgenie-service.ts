@@ -1,8 +1,7 @@
 import type { API, API_Error } from '~/types/api';
 import { OnCallSchedule } from '~/types/services/opsgenie';
-import type { APIService } from './api-service.d';
 
-class OpsGenieService implements APIService {
+class OpsGenieService {
   constructor(
     private readonly api: API,
     private readonly schedule: string,
