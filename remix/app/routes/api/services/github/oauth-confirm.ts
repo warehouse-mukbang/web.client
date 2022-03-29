@@ -1,6 +1,7 @@
 import { LoaderFunction } from 'remix';
 
 import APIService from '~/services/api-service';
+import FirebaseService from '~/services/database-service';
 import GithubService from '~/services/github-service';
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -23,17 +24,40 @@ export const loader: LoaderFunction = async ({ request }) => {
     };
   }
 
-  const github = new GithubService(
-    new APIService(),
-    process.env.GITHUB_USERNAME,
-    process.env.GITHUB_TOKEN
-  );
+  const github = new GithubService(new APIService());
 
-  await github.oauth_confirm(code);
+  const access_token = await github.oauth_confirm(code);
+
+  if (!access_token) {
+    return {
+      success: false,
+      error: 'Invalid auth code',
+      data: null,
+    };
+  }
+
+  const firebase = new FirebaseService();
+
+  // TODO get username from client
+  const user = await firebase.create_user({
+    oauth_token: access_token,
+    service: 'GitHub',
+    username: process.env.GITHUB_USERNAME,
+  });
+
+  if (!user) {
+    return {
+      success: false,
+      error: 'User already exists',
+      data: null,
+    };
+  }
 
   return {
     success: true,
     error: null,
-    data: null,
+    data: {
+      user,
+    },
   };
 };

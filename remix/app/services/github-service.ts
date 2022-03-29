@@ -4,13 +4,10 @@ import {
   GithubService as IGithubService,
 } from './github-service.d';
 import type { APIService } from './api-service.d';
+import { User } from './database-service.d';
 
 class GithubService implements IGithubService {
-  constructor(
-    private readonly api: APIService,
-    private readonly username: string,
-    private readonly token: string
-  ) {}
+  constructor(private readonly api: APIService, private readonly user?: User) {}
 
   oauth_init() {
     const url = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=repo user read:org`;
@@ -18,7 +15,7 @@ class GithubService implements IGithubService {
     return url;
   }
 
-  async oauth_confirm(auth_code: string): Promise<boolean> {
+  async oauth_confirm(auth_code: string): Promise<string> {
     const url = `https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${auth_code}`;
 
     const response = await this.api.post(url, {
@@ -29,20 +26,16 @@ class GithubService implements IGithubService {
 
     const { access_token } = await response.json();
 
-    console.log('access_token', access_token);
-
-    // todo: update database
-
-    return true;
+    return access_token;
   }
 
   async get_prs(): Promise<GithubPullRequests> {
-    if (!this.username || !this.token) {
-      throw new Error('Missing or Invalid Github username or token');
+    if (!this.user) {
+      throw new Error('Missing or Invalid Github Authorization');
     }
 
     const querystring = encodeURIComponent(
-      `is:open is:pr review-requested:${this.username} archived:false`
+      `is:open is:pr review-requested:${this.user.username} archived:false`
     );
 
     const data = await (
@@ -50,13 +43,11 @@ class GithubService implements IGithubService {
         `https://api.github.com/search/issues?q=${querystring}&type=pr`,
         {
           headers: {
-            Authorization: `token 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`,
+            Authorization: `token ${this.user.oauth_token}`,
           },
         }
       )
     ).json();
-
-    console.log('data', data);
 
     return {
       pr_count: data.total_count,

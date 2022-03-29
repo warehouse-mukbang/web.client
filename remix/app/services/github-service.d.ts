@@ -18,7 +18,7 @@ interface GithubIssues {}
 
 interface GithubService {
   oauth_init(): void;
-  oauth_confirm(auth_code: string): Promise<boolean>;
+  oauth_confirm(auth_code: string): Promise<string>;
 
   get_prs(): Promise<GithubPullRequests>;
   get_issues(): Promise<GithubIssues>;
