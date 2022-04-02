@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { initializeApp as initializeAdminApp } from 'firebase-admin/app';
+import app from 'firebase-admin';
 
 import { decrypt, encrypt } from '~/utils/crypto';
 
@@ -26,7 +26,7 @@ class FirebaseService implements DatabaseService {
     };
 
     if (!admin.apps.length) {
-      initializeAdminApp({
+      app.initializeApp({
         credential: admin.credential.cert(firebaseConfig as any),
         databaseURL: process.env.FIREBASE_DATABASE_URL,
       });

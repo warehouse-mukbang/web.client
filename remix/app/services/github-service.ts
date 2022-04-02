@@ -1,6 +1,7 @@
 import {
   GithubPullRequests,
   GithubIssues,
+  GithubUser,
   GithubService as IGithubService,
 } from './github-service.d';
 import type { APIService } from './api-service.d';
@@ -67,6 +68,20 @@ class GithubService implements IGithubService {
   // TODO: IMPLEMENT THIS
   async get_issues(): Promise<GithubIssues> {
     return {};
+  }
+
+  async get_user(access_token: string): Promise<GithubUser> {
+    const response = await this.api.get(`https://api.github.com/user`, {
+      headers: {
+        Authorization: `token ${access_token}`,
+      },
+    });
+
+    const { login } = await response.json();
+
+    return {
+      username: login,
+    };
   }
 }
 

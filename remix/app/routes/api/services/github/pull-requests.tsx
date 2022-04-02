@@ -4,20 +4,21 @@ import APIService from '~/services/api-service';
 import FirebaseService from '~/services/database-service';
 import GithubService from '~/services/github-service';
 
-export const loader: LoaderFunction = async () => {
-  // TODO remove check
-  if (!process.env.GITHUB_TOKEN || !process.env.GITHUB_USERNAME) {
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const auth_id = url.searchParams.get('auth_id');
+
+  if (!auth_id) {
     return {
       success: false,
-      error: 'GITHUB_TOKEN and GITHUB_USERNAME must be set',
+      error: 'auth_id not found',
       data: null,
     };
   }
 
-  const firebase = new FirebaseService()
+  const firebase = new FirebaseService();
 
-  // TODO replace with username or id from client
-  const user = await firebase.get_user_by_username(process.env.GITHUB_USERNAME);
+  const user = await firebase.get_user_by_id(auth_id);
 
   if (!user) {
     return {
