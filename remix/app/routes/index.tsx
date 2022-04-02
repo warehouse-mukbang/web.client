@@ -3,6 +3,7 @@ import type { LoaderFunction, MetaFunction } from 'remix';
 
 import GithubPRs from '~/components/services/github/PullRequests';
 import useAuthorizer from '~/hooks/useAuthorizer';
+import { useEffect } from 'react';
 
 export let meta: MetaFunction = () => {
   return {
@@ -19,16 +20,32 @@ export let loader: LoaderFunction = ({ request }) => {
     const token = url.searchParams.get('token');
 
     return {
+      Environment: {
+        BASE_URL: process.env.BASE_URL,
+      },
       platform,
       token,
     };
   }
 
-  return true;
+  return {
+    Environment: {
+      BASE_URL: process.env.BASE_URL,
+    },
+  };
 };
 
 export default function Index() {
   const loader = useLoaderData();
+
+  useEffect(() => {
+    if (!window.localStorage.getItem('WidgetBoard::BASE_URL')) {
+      window.localStorage.setItem(
+        'WidgetBoard::BASE_URL',
+        loader.Environment.BASE_URL
+      );
+    }
+  }, []);
 
   const { platforms } = useAuthorizer(loader);
 

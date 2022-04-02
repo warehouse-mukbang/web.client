@@ -63,7 +63,11 @@ const PullRequests: React.FC<{ authorized?: string | null | boolean }> = ({
           <button
             className='button bg-green-400 p-3 rounded-lg hover:bg-green-500 active:bg-green-600 flex items-center justify-center'
             onClick={() => {
-              window.parent.location.href = `http://localhost:49666/api/services/github/oauth-init`;
+              const BASE_URL = window.localStorage.getItem(
+                'WidgetBoard::BASE_URL'
+              );
+
+              window.parent.location.href = `${BASE_URL}/api/services/github/oauth-init`;
             }}
           >
             <img
