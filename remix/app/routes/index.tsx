@@ -1,9 +1,9 @@
+import { useEffect } from 'react';
 import { useLoaderData } from 'remix';
 import type { LoaderFunction, MetaFunction } from 'remix';
 
 import GithubPRs from '~/components/services/github/PullRequests';
 import useAuthorizer from '~/hooks/useAuthorizer';
-import { useEffect } from 'react';
 
 export let meta: MetaFunction = () => {
   return {
