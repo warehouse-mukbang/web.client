@@ -1,38 +1,79 @@
 import { useEffect, useState } from 'react';
-import { useFetcher } from 'remix';
 
 import { PullRequest } from '~/services/github-service.d';
 
 import * as Card from '../../Card';
 
-const PullRequests: React.FC = () => {
-  const fetcher = useFetcher();
+import AuthIcon from '~/assets/touch-id.png';
+
+const PullRequests: React.FC<{ authorized?: string | null | boolean }> = ({
+  authorized,
+}) => {
+  const [fetching, set_fetching] = useState(false);
   const [error, set_error] = useState<string>();
   const [pr_count, set_pr_count] = useState<number | string>('~');
   const [open_prs, set_open_prs] = useState<Array<PullRequest>>([]);
 
   useEffect(() => {
-    fetcher.load('/api/services/github/pull-requests');
-  }, []);
+    (async () => {
+      if (authorized) {
+        set_fetching(true);
 
-  useEffect(() => {
-    if (fetcher.type !== 'done') {
-      return;
-    }
+        const data = await fetch(
+          `/api/services/github/pull-requests?auth_id=${authorized}`
+        ).then(res => res.json());
 
-    if (fetcher.data.error) {
-      set_error(fetcher.data.error);
-      return;
-    }
+        if (data.error) {
+          set_error(data.error);
+          set_fetching(true);
+          return;
+        }
 
-    set_pr_count(fetcher.data.body.pr_count);
-    set_open_prs(fetcher.data.body.open_prs);
-  }, [fetcher.type]);
+        set_fetching(false);
+        set_pr_count(data.body.pr_count);
+        set_open_prs(data.body.open_prs);
+      }
+    })();
+  }, [authorized]);
 
   if (error) {
     return (
       <Card.Base size='large'>
         <Card.Header title='Something went wrong:' subtitle={error} />
+      </Card.Base>
+    );
+  }
+
+  // there is a little bit of glitchy behavior here sometimes.
+  // it can be prevented by moving the auth token out of localStorage
+  // and into a server-side session. that is also a more secure solution.
+  if (fetching) {
+    return <Card.Base size='large' loading />;
+  }
+
+  if (!authorized) {
+    return (
+      <Card.Base size='large'>
+        <Card.Header
+          title='Authorize Github'
+          subtitle='Click to authorize Github'
+        />
+
+        <section className='h-full flex items-center justify-center'>
+          <button
+            className='button bg-green-400 p-3 rounded-lg hover:bg-green-500 active:bg-green-600 flex items-center justify-center'
+            onClick={() => {
+              window.parent.location.href = `http://localhost:49666/api/services/github/oauth-init`;
+            }}
+          >
+            <img
+              className='h-4 mr-2'
+              alt='authenticate with github'
+              src={AuthIcon}
+            />
+            Authorize with Github
+          </button>
+        </section>
       </Card.Base>
     );
   }

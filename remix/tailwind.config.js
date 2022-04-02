@@ -3,7 +3,16 @@ module.exports = {
   mode: 'jit',
   darkMode: 'media', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
+        },
+      },
+      animation: {
+        loader: 'shimmer 2s infinite',
+      },
+    },
   },
   variants: {},
   plugins: [require('@tailwindcss/forms')],

@@ -1,18 +1,10 @@
-import { LoaderFunction } from 'remix';
+import { LoaderFunction, redirect } from 'remix';
 
 import APIService from '~/services/api-service';
 import FirebaseService from '~/services/database-service';
 import GithubService from '~/services/github-service';
 
 export const loader: LoaderFunction = async ({ request }) => {
-  if (!process.env.GITHUB_TOKEN || !process.env.GITHUB_USERNAME) {
-    return {
-      success: false,
-      error: 'GITHUB_TOKEN and GITHUB_USERNAME must be set',
-      data: null,
-    };
-  }
-
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
 
@@ -36,13 +28,22 @@ export const loader: LoaderFunction = async ({ request }) => {
     };
   }
 
+  const github_user = await github.get_user(access_token);
+
+  if (!github_user.username) {
+    return {
+      success: false,
+      error: 'Invalid Github User',
+      data: null,
+    };
+  }
+
   const firebase = new FirebaseService();
 
-  // TODO get username from client
   const user = await firebase.create_user({
     oauth_token: access_token,
     service: 'GitHub',
-    username: process.env.GITHUB_USERNAME,
+    username: github_user.username,
   });
 
   if (!user) {
@@ -53,11 +54,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     };
   }
 
-  return {
-    success: true,
-    error: null,
-    data: {
-      user,
-    },
-  };
+  return redirect(
+    `${process.env.BASE_URL}?authorize=true&platform=github&token=${user.id}`
+  );
 };

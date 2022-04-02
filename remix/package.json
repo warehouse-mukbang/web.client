@@ -13,22 +13,24 @@
     "build:css": "postcss styles --base styles --dir app/styles --env production"
   },
   "dependencies": {
-    "@remix-run/express": "^1.1.1",
-    "@remix-run/react": "^1.1.1",
+    "@remix-run/express": "^1.3.3",
+    "@remix-run/react": "^1.3.3",
+    "@remix-run/server-runtime": "^1.3.3",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
     "dotenv": "^12.0.3",
     "express": "^4.17.2",
-    "firebase": "^9.6.10",
-    "firebase-admin": "^10.0.2",
+    "firebase": "8.0.1",
+    "firebase-admin": "9.3.0",
     "morgan": "^1.10.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.1",
-    "remix": "^1.1.1"
+    "remix": "^1.3.3"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.1.1",
+    "@firebase/database-compat": "^0.1.7",
+    "@remix-run/dev": "^1.3.3",
     "@tailwindcss/forms": "^0.3.4",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
