@@ -107,3 +107,4 @@ Note: If you want to update styles, you'll need to open another terminal tab at 
 - [ ] show empty states when no data is available
 - [ ] add server-side caching to speed up page load
 - [x] Rebuild with Remix
+- [ ] fix readme
