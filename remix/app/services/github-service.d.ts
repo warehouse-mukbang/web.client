@@ -14,8 +14,21 @@ interface GithubPullRequests {
   open_prs: PullRequest[];
 }
 
-interface GithubIssues {}
-
+interface Issue {
+  url: string;
+  title: string;
+  author: {
+    name: string;
+    image_url: string;
+  };
+  comments: number;
+  created_at: string;
+}
+interface GithubIssues {
+  total_count: number;
+  items: Issue[];
+  incomplete_results: boolean;
+}
 interface GithubUser {
   username: string;
 }
@@ -32,6 +45,7 @@ interface GithubService {
 export {
   PullRequest,
   GithubPullRequests,
+  Issue,
   GithubIssues,
   GithubUser,
   GithubService,
