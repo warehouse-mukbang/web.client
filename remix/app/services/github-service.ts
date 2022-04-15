@@ -65,9 +65,41 @@ class GithubService implements IGithubService {
     };
   }
 
-  // TODO: IMPLEMENT THIS
+  
   async get_issues(): Promise<GithubIssues> {
-    return {};
+    if (!this.user) {
+      throw new Error('Missing or Invalid Github Authorization');
+    }
+
+    const querystring = encodeURIComponent(
+      `is:open is:issue assignee:${this.user.username} archived:false`
+    );
+
+    const data = await (
+      await this.api.get(
+        `https://api.github.com/search/issues?q=${querystring}&type=issue`,
+        {
+          headers: {
+            Authorization: `token ${this.user.oauth_token}`,
+          },
+        }
+      )
+    ).json();
+
+    return {
+      total_count: data.total_count,
+      items: data.items?.map((item: any) => ({
+        url: item.html_url,
+        title: item.title,
+        author: {
+          image_url: item.user.avatar_url,
+          name: item.user.login,
+        },
+        comments: item.comments,
+        created_at: item.created_at,
+      })),
+      incomplete_results: data.incomplete_results,
+    };
   }
 
   async get_user(access_token: string): Promise<GithubUser> {
