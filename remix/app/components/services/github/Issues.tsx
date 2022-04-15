@@ -87,8 +87,8 @@ const Issues: React.FC<{ authorized?: string | null | boolean }> = ({
       <Card.Header title='Issues assigned to you:' subtitle={issue_count} />
 
       <ul className='max-h-full overflow-scroll'>
-        {open_issues?.map(pr => (
-          <IssueItem {...pr} key={pr.url} />
+        {open_issues?.map(issue => (
+          <IssueItem {...issue} key={issue.url} />
         ))}
       </ul>
     </Card.Base>
